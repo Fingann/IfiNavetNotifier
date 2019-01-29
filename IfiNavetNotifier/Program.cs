@@ -23,7 +23,10 @@ namespace IfiNavetNotifier
 
                 notifier.Run();
 
-                Console.ReadKey();
+                while (true)
+                {
+                    Thread.Sleep(5000);
+                }
             }
 
         }

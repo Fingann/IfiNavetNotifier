@@ -20,37 +20,34 @@ namespace IfiNavetNotifier
         public IfiEventContext Context { get; set; }
         public MailClient MailClient { get; set; }
         public List<string> Emails { get; set; }
+        public ListComparer Listcomparer { get; set; }
         public Notifier(IfiEventContext context, MailClient mailClient,IEnumerable<string> emails)
         {
             Context = context;
             WebParser = new IfiWebsiteParser();
             MailClient = new MailClient();
             Emails = emails.ToList();
+            Listcomparer = new ListComparer();
 
         }
 
         public void Run()
         {
-
-            var eventids = WebParser.GetEventIds();
-             var ifiEvents = WebParser.GetEvents(eventids).ToList();
-            var ListComparer = new ListComparer();
-            Context.AddRange(ifiEvents);
-            Context.SaveChanges();
+           
+           
+            Initialize();
 
             var startTimeSpan = TimeSpan.Zero;
-            var periodTimeSpan = TimeSpan.FromSeconds(20);
+            var periodTimeSpan = TimeSpan.FromMinutes(20);
 
-            var timer = new System.Threading.Timer((e) =>
+            var timer = new Timer((e) =>
             {
-                eventids = WebParser.GetEventIds();
-                ifiEvents = WebParser.GetEvents(eventids).ToList();
+                var eventids = WebParser.GetEventIds();
+                var ifiEvents = WebParser.GetEvents(eventids).ToList();
                 var dbevents = Context.IfiEvent.ToList();
 
-                var diffrent = ListComparer.Compare(ifiEvents, dbevents);
-                //var updatedEvents = ifiEvents.Except(dbevents);
-                //List<IfiEvent> toBeUpdated = dbevents.Where(c => ifiEvents.Any(d => c.PlacesLeft == d.PlacesLeft)).ToList();
-
+                var diffrent = Listcomparer.Compare(ifiEvents, dbevents);
+               
                 if (diffrent.Any())
                 {
                     MailClient.Send(diffrent, Emails);
@@ -62,17 +59,22 @@ namespace IfiNavetNotifier
                 }
                 Console.WriteLine($"Ran updates: {diffrent.Count()}");
             }, null, startTimeSpan, periodTimeSpan);
-            Console.ReadKey();
-            }
-
-
-
-
-
-
-
-
         }
+
+        private void Initialize() { 
+            var eventids = WebParser.GetEventIds();
+            var ifiEvents = WebParser.GetEvents(eventids).ToList();
+            Context.AddRange(ifiEvents);
+            Context.SaveChanges();
+        }
+
+
+
+
+
+
+
+    }
 
 
 
