@@ -18,6 +18,10 @@ namespace IfiNavetNotifier
             hc = new HttpClient();
 
         }
+        public IEnumerable<IfiEvent> GetEvents()
+        {
+            return GetEvents(GetEventIds());
+        }
 
         public IEnumerable<IfiEvent> GetEvents(IEnumerable<String> eventIds)
         {

@@ -11,8 +11,10 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.2.1" />
     <PackageReference Include="Sendgrid" Version="9.10.0" />
+    <PackageReference Include="PushBulletSharp" Version="3.1.0" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Database\" />
+    <Folder Include="Pushbullet\" />
   </ItemGroup>
 </Project>

@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 using IfiNavetNotifier.Database;
+using IfiNavetNotifier.Pushbullet;
 
 namespace IfiNavetNotifier
 {
@@ -18,39 +19,39 @@ namespace IfiNavetNotifier
        
         public IfiWebsiteParser WebParser { get; set; }
         public IfiEventContext Context { get; set; }
-        public MailClient MailClient { get; set; }
+        public PushbulletManager PushManager { get; set; }
         public List<string> Emails { get; set; }
+
         public ListComparer Listcomparer { get; set; }
-        public Notifier(IfiEventContext context, MailClient mailClient,IEnumerable<string> emails)
+
+        public Notifier(IfiEventContext context, PushbulletManager pushManager)
         {
             Context = context;
             WebParser = new IfiWebsiteParser();
-            MailClient = new MailClient();
-            Emails = emails.ToList();
+            PushManager = pushManager;
+            
             Listcomparer = new ListComparer();
+            InitializeDB();
 
         }
 
         public void Run()
         {
-           
-           
-            Initialize();
-
+        
             var startTimeSpan = TimeSpan.Zero;
-            var periodTimeSpan = TimeSpan.FromMinutes(20);
+            var periodTimeSpan = TimeSpan.FromSeconds(20);
 
             var timer = new Timer((e) =>
             {
-                var eventids = WebParser.GetEventIds();
-                var ifiEvents = WebParser.GetEvents(eventids).ToList();
+
+                var ifiEvents = WebParser.GetEvents().ToList();
                 var dbevents = Context.IfiEvent.ToList();
 
                 var diffrent = Listcomparer.Compare(ifiEvents, dbevents);
                
                 if (diffrent.Any())
                 {
-                    MailClient.Send(diffrent, Emails);
+                    PushManager.Send(diffrent);
                     Context.RemoveRange(dbevents);
                     Context.SaveChanges();
                     Context.Add(ifiEvents);
@@ -61,10 +62,8 @@ namespace IfiNavetNotifier
             }, null, startTimeSpan, periodTimeSpan);
         }
 
-        private void Initialize() { 
-            var eventids = WebParser.GetEventIds();
-            var ifiEvents = WebParser.GetEvents(eventids).ToList();
-            Context.AddRange(ifiEvents);
+        private void InitializeDB() { 
+            Context.AddRange(WebParser.GetEvents());
             Context.SaveChanges();
         }
 

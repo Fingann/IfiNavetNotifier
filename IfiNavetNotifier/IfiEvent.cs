@@ -14,9 +14,10 @@ namespace IfiNavetNotifier
         public override string ToString()
         {
             return $@"Name = {Name}
+            PlacesLeft = {PlacesLeft}
             Date = {Date}
             Food = {Food}
-            PlacesLeft = {PlacesLeft}";
+            Link = {Link}";
         }
     }
 }
