@@ -10,7 +10,7 @@ namespace IfiNavetNotifier
     {
         static void Main(string[] args)
         {
-            List<string> emails = new List<string> { "fingann92@gmail.com", "josteinmeg@gmail.com" };
+            //List<string> emails = new List<string> { "fingann92@gmail.com", "josteinmeg@gmail.com" };
 
 
             PushbulletManager pushManager = new PushbulletManager();

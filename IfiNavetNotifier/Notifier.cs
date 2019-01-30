@@ -48,7 +48,6 @@ namespace IfiNavetNotifier
         {
                 var ifiEvents = WebParser.GetEvents().ToList();
                 var dbevents = Context.IfiEvent.ToList();
-
                 var diffrent = Listcomparer.Compare(ifiEvents, dbevents);
 
                 if (diffrent.Any())
@@ -56,7 +55,7 @@ namespace IfiNavetNotifier
                     PushManager.Send(diffrent);
                     Context.RemoveRange(dbevents);
                     await Context.SaveChangesAsync();
-                    Context.Add(ifiEvents);
+                    Context.AddRange(ifiEvents);
                     await Context.SaveChangesAsync();
 
                 }

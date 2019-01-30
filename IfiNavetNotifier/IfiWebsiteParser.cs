@@ -46,7 +46,7 @@ namespace IfiNavetNotifier
 
                 var datePatt = @"dd.MM.yyyy HH:mm";
                 var date = htmlDoc.DocumentNode.SelectSingleNode("/html/body/div[3]/div/div[1]/div[2]/div[1]/p").InnerText;
-                ievent.Date = DateTime.ParseExact(date, datePatt, null);
+                ievent.Date = DateTime.ParseExact(date, datePatt,new System.Globalization.CultureInfo("nb-NO"));
 
 
 

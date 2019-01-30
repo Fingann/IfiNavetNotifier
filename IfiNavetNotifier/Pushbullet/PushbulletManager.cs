@@ -30,7 +30,7 @@ namespace IfiNavetNotifier.Pushbullet
             PushNoteRequest reqeust = new PushNoteRequest()
             {
                 ChannelTag="ifibot",
-                Title = $"Ifi {events.Count()} events updated",
+                Title = $"{events.Count()} events updated",
                 Body = body
             };
 
