@@ -7,7 +7,8 @@ WORKDIR /src
 COPY IfiNavetNotifier.csproj IfiNavetNotifier/
 
 RUN dotnet restore IfiNavetNotifier/IfiNavetNotifier.csproj
-COPY . .
+#COPY . .
+COPY IfiNavetNotifier/ .
 WORKDIR /src/IfiNavetNotifier
 RUN dotnet build IfiNavetNotifier.csproj -c Release -o /app
 
