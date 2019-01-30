@@ -11,7 +11,7 @@ namespace IfiNavetNotifier
             List<IfiEvent> tempList = new List<IfiEvent>();
             foreach (var item in a)
             {
-                var bItem = b.FirstOrDefault(x => x.ID == item.ID);
+                var bItem = b.FirstOrDefault(x => x.Link == item.Link);
                 if (bItem != null)
                 {
                     if (bItem.PlacesLeft != item.PlacesLeft)

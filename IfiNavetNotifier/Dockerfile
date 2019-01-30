@@ -3,7 +3,9 @@ WORKDIR /app
 
 FROM microsoft/dotnet:2.2-sdk AS build
 WORKDIR /src
+#COPY IfiNavetNotifier/IfiNavetNotifier.csproj IfiNavetNotifier/
 COPY IfiNavetNotifier/IfiNavetNotifier.csproj IfiNavetNotifier/
+
 RUN dotnet restore IfiNavetNotifier/IfiNavetNotifier.csproj
 COPY . .
 WORKDIR /src/IfiNavetNotifier
