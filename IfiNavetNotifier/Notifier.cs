@@ -35,31 +35,63 @@ namespace IfiNavetNotifier
 
         }
 
-        public void Run()
+        public async Task PeriodicFooAsync(TimeSpan interval, CancellationToken cancellationToken)
         {
-        
-            var startTimeSpan = TimeSpan.Zero;
-            var periodTimeSpan = TimeSpan.FromSeconds(20);
-
-            var timer = new Timer((e) =>
+            while (true)
             {
+                await CheckEvents();
+                await Task.Delay(interval, cancellationToken);
+            }
+        }
 
+        public async Task CheckEvents()
+        {
                 var ifiEvents = WebParser.GetEvents().ToList();
                 var dbevents = Context.IfiEvent.ToList();
 
                 var diffrent = Listcomparer.Compare(ifiEvents, dbevents);
-               
+
                 if (diffrent.Any())
                 {
                     PushManager.Send(diffrent);
                     Context.RemoveRange(dbevents);
-                    Context.SaveChanges();
+                    await Context.SaveChangesAsync();
                     Context.Add(ifiEvents);
-                    Context.SaveChanges();
+                    await Context.SaveChangesAsync();
 
                 }
                 Console.WriteLine($"Ran updates: {diffrent.Count()}");
-            }, null, startTimeSpan, periodTimeSpan);
+        }
+
+        public async void Run()
+        {
+            var startTimeSpan = TimeSpan.Zero;
+            var periodTimeSpan = TimeSpan.FromSeconds(20);
+            CancellationToken ct = new CancellationToken();
+            await PeriodicFooAsync(periodTimeSpan, ct);
+
+
+
+
+            //var timer = new Timer((e) =>
+            //{
+
+            //    var ifiEvents = WebParser.GetEvents().ToList();
+            //    var dbevents = Context.IfiEvent.ToList();
+
+            //    var diffrent = Listcomparer.Compare(ifiEvents, dbevents);
+
+            //    if (diffrent.Any())
+            //    {
+            //        PushManager.Send(diffrent);
+            //        Context.RemoveRange(dbevents);
+            //        Context.SaveChanges();
+            //        Context.Add(ifiEvents);
+            //        Context.SaveChanges();
+
+            //    }
+            //    Console.WriteLine($"Ran updates: {diffrent.Count()}");
+            //}, null, startTimeSpan, periodTimeSpan);
         }
 
         private void InitializeDB() { 
