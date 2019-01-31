@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace IfiNavetNotifier
 {
-    public static class EventManager
+    public static class IfiEventExtentions
     {
 
 

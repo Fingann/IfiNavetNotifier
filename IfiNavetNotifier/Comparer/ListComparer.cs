@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace IfiNavetNotifier
 {
-    public class ListComparer
+    public class ListComparer 
     {
         public List<IfiEvent> Compare(List<IfiEvent> a, List<IfiEvent> b)
         {
@@ -25,6 +25,5 @@ namespace IfiNavetNotifier
             return tempList; 
         }
 
-           
     }
 }

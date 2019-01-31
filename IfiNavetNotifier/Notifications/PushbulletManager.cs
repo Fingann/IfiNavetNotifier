@@ -5,9 +5,9 @@ using PushbulletSharp;
 using PushbulletSharp.Models.Requests;
 using PushbulletSharp.Models.Requests.Ephemerals;
 
-namespace IfiNavetNotifier.Pushbullet
+namespace IfiNavetNotifier.Notifications
 {
-    public class PushbulletManager
+    public class PushbulletManager : INotifyManager
     {
         public PushbulletClient Client { get; set; }
         public string ApiKey { get; set; }

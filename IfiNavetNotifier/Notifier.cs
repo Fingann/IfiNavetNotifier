@@ -10,24 +10,23 @@ using System.Threading;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 using IfiNavetNotifier.Database;
-using IfiNavetNotifier.Pushbullet;
+using IfiNavetNotifier.Notifications;
 
 namespace IfiNavetNotifier
 {
     public class Notifier
     {
        
-        public IfiWebsiteParser WebParser { get; set; }
+        public IWebParser<IfiEvent> WebParser { get; set; }
         public IfiEventContext Context { get; set; }
-        public PushbulletManager PushManager { get; set; }
+        public INotifyManager PushManager { get; set; }
         public List<string> Emails { get; set; }
-
         public ListComparer Listcomparer { get; set; }
 
-        public Notifier(IfiEventContext context, PushbulletManager pushManager)
+        public Notifier(IfiEventContext context, IWebParser<IfiEvent> webParser, INotifyManager pushManager)
         {
             Context = context;
-            WebParser = new IfiWebsiteParser();
+            WebParser = webParser;
             PushManager = pushManager;
             
             Listcomparer = new ListComparer();
@@ -35,7 +34,7 @@ namespace IfiNavetNotifier
 
         }
 
-        public async Task PeriodicFooAsync(TimeSpan interval, CancellationToken cancellationToken)
+        public async Task PeriodicTask(TimeSpan interval, CancellationToken cancellationToken)
         {
             while (true)
             {
@@ -46,7 +45,7 @@ namespace IfiNavetNotifier
 
         public async Task CheckEvents()
         {
-                var ifiEvents = WebParser.GetEvents().ToList();
+                var ifiEvents = WebParser.GetEntitys().ToList();
                 var dbevents = Context.IfiEvent.ToList();
                 var diffrent = Listcomparer.Compare(ifiEvents, dbevents);
 
@@ -67,34 +66,12 @@ namespace IfiNavetNotifier
             var startTimeSpan = TimeSpan.Zero;
             var periodTimeSpan = TimeSpan.FromSeconds(20);
             CancellationToken ct = new CancellationToken();
-            await PeriodicFooAsync(periodTimeSpan, ct);
-
-
-
-
-            //var timer = new Timer((e) =>
-            //{
-
-            //    var ifiEvents = WebParser.GetEvents().ToList();
-            //    var dbevents = Context.IfiEvent.ToList();
-
-            //    var diffrent = Listcomparer.Compare(ifiEvents, dbevents);
-
-            //    if (diffrent.Any())
-            //    {
-            //        PushManager.Send(diffrent);
-            //        Context.RemoveRange(dbevents);
-            //        Context.SaveChanges();
-            //        Context.Add(ifiEvents);
-            //        Context.SaveChanges();
-
-            //    }
-            //    Console.WriteLine($"Ran updates: {diffrent.Count()}");
-            //}, null, startTimeSpan, periodTimeSpan);
+            await PeriodicTask(periodTimeSpan, ct);
         }
 
+
         private void InitializeDB() { 
-            Context.AddRange(WebParser.GetEvents());
+            Context.AddRange(WebParser.GetEntitys());
             Context.SaveChanges();
         }
 
