@@ -27,12 +27,27 @@ namespace IfiNavetNotifier.Notifications
             }
             var plainTextContent = body;
 
-            PushNoteRequest reqeust = new PushNoteRequest()
+            PushNoteRequest reqeust;
+            if (events.Count() == 1)
             {
-                ChannelTag="ifibot",
-                Title = $"{events.Count()} events updated",
-                Body = body
-            };
+                reqeust = new PushNoteRequest()
+                {
+                    ChannelTag = "ifibot",
+                    Title = $"{events.First().PlacesLeft} - {events.First().Name}",
+                    Body = body
+                };
+            }
+            else
+            {
+                reqeust = new PushNoteRequest()
+                {
+                    ChannelTag = "ifibot",
+                    Title = $"{events.Count()} events updated",
+                    Body = body
+                };
+
+            }
+           
 
             var response = Client.PushNote(reqeust);
         }

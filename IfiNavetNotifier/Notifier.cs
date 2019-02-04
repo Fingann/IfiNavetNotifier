@@ -46,6 +46,8 @@ namespace IfiNavetNotifier
         public async Task CheckEvents()
         {
                 var ifiEvents = WebParser.GetEntitys().ToList();
+                if (ifiEvents == null) return;
+
                 var dbevents = Context.IfiEvent.ToList();
                 var diffrent = Listcomparer.Compare(ifiEvents, dbevents);
 
@@ -71,6 +73,7 @@ namespace IfiNavetNotifier
 
 
         private void InitializeDB() { 
+
             Context.AddRange(WebParser.GetEntitys());
             Context.SaveChanges();
         }

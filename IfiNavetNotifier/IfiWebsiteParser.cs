@@ -21,7 +21,14 @@ namespace IfiNavetNotifier
         }
         public IEnumerable<IfiEvent> GetEntitys()
         {
-            return GetEntitys(GetEventIds());
+            try
+            {
+                return GetEntitys(GetEventIds());
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
 
         public IEnumerable<IfiEvent> GetEntitys(IEnumerable<String> eventIds)
