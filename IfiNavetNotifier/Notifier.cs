@@ -45,7 +45,7 @@ namespace IfiNavetNotifier
 
         public async Task CheckEvents()
         {
-                var ifiEvents = WebParser.GetEntitys().ToList();
+                var ifiEvents = WebParser.GetEntitys();
                 if (ifiEvents == null) return;
 
                 var dbevents = Context.IfiEvent.ToList();
@@ -65,7 +65,6 @@ namespace IfiNavetNotifier
 
         public async void Run()
         {
-            var startTimeSpan = TimeSpan.Zero;
             var periodTimeSpan = TimeSpan.FromSeconds(20);
             CancellationToken ct = new CancellationToken();
             await PeriodicTask(periodTimeSpan, ct);

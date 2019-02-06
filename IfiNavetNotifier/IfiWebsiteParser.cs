@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
@@ -75,9 +76,16 @@ namespace IfiNavetNotifier
         {
             string urlAddress = "https://ifinavet.no/event";
             string data = string.Empty;
-            data =  hc.GetStringAsync(urlAddress).Result;
-
-
+            try
+            {
+                data =  hc.GetStringAsync(urlAddress).Result;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return new List<string>();
+            }
+            
             var htmlDoc = new HtmlDocument();
             htmlDoc.LoadHtml(data);
 

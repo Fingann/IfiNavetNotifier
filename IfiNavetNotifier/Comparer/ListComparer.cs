@@ -6,8 +6,12 @@ namespace IfiNavetNotifier
 {
     public class ListComparer 
     {
-        public List<IfiEvent> Compare(List<IfiEvent> a, List<IfiEvent> b)
+        public List<IfiEvent> Compare(IEnumerable<IfiEvent> a, IEnumerable<IfiEvent> b)
         {
+            if (a == null || b == null)
+            {
+                return new List<IfiEvent>();
+            }
             List<IfiEvent> tempList = new List<IfiEvent>();
             foreach (var item in a)
             {
