@@ -25,7 +25,7 @@ namespace IfiNavet.Infrastructure.Web
                 
                 Client.Login("https://ifinavet.no/login", user);
                 //new
-                Hclient,
+                
             }
             BaseUri = new Uri("http://ifinavet.no/");
             

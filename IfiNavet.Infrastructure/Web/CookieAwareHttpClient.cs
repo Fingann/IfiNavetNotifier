@@ -21,13 +21,13 @@ namespace IfiNavet.Infrastructure.Web
                 return await client.GetStringAsync(uri);
             }
         }
-        public async Task PostAsync(Uri uri,IEnumerable<KeyValuePair<string,string>> values)
+        public async Task<string> PostAsync(Uri uri,IEnumerable<KeyValuePair<string,string>> values)
         {
             var content = new FormUrlEncodedContent(values);
             using (var client = new HttpClient(Handler))
             {
-               await client.PostAsync(uri, content);
-
+               var response = await client.PostAsync(uri, content);
+               return await response.Content.ReadAsStringAsync();
             }
         }
         

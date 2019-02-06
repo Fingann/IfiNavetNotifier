@@ -65,7 +65,6 @@ namespace IfiNavetNotifier
 
         public async void Run()
         {
-            var startTimeSpan = TimeSpan.Zero;
             var periodTimeSpan = TimeSpan.FromSeconds(20);
             CancellationToken ct = new CancellationToken();
             await PeriodicTask(periodTimeSpan, ct);

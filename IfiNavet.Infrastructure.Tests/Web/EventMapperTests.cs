@@ -15,7 +15,7 @@ namespace IfiNavet.Infrastructure.Tests.Web
         [TestCase("http://ifinavet.no/event/222")]      
         public void event_html_should_give_event(string link)
         {
-            var parser = new EventParser( new UserLogin("sondrefi","stemmer123"));
+            var parser = new EventParser( new UserLogin("sondrefi","ifibot123"));
             Task<IfiEvent> ifiEvent = parser.GetEvent(new Uri("http://ifinavet.no/event/222"));
             Assert.AreEqual(ifiEvent.Result.Name, "Bedriftspresentasjon med EVRY");
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using IfiNavetNotifier.Database;
 using IfiNavetNotifier.Notifications;
@@ -12,7 +13,7 @@ namespace IfiNavetNotifier
         static void Main(string[] args)
         {
             //TestCompare tc = new TestCompare();
-
+           
             INotifyManager pushManager = new PushbulletManager();
             IWebParser<IfiEvent> webParser = new IfiWebsiteParser();
 
