@@ -47,9 +47,16 @@ namespace IfiNavetNotifier.Notifications
                 };
 
             }
-           
 
-            var response = Client.PushNote(reqeust);
+            try
+            {
+                var response = Client.PushNote(reqeust);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            
         }
     }
 }
