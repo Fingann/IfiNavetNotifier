@@ -5,6 +5,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IfiNavetNotifier", "IfiNave
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{14BB993B-DA14-42F4-96EE-1EC5803E63BF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IfiNavet.API", "IfiNavet.API\IfiNavet.API.csproj", "{545DC619-E6AC-44D2-BA6E-73D2BC3D437A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IfiNavet.Core", "IfiNavet.Core\IfiNavet.Core.csproj", "{1A4D8DC1-4728-4E9A-BB1A-3A275D62180F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IfiNavet.Infrastructure", "IfiNavet.Infrastructure\IfiNavet.Infrastructure.csproj", "{3F067FF0-041E-4489-9712-81555A0437C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IfiNavet.Infrastructure.Tests", "IfiNavet.Infrastructure.Tests\IfiNavet.Infrastructure.Tests.csproj", "{A4358B02-D53D-4A1A-8717-3B939A0EF7F7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,5 +27,21 @@ Global
 		{14BB993B-DA14-42F4-96EE-1EC5803E63BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{14BB993B-DA14-42F4-96EE-1EC5803E63BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{14BB993B-DA14-42F4-96EE-1EC5803E63BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{545DC619-E6AC-44D2-BA6E-73D2BC3D437A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{545DC619-E6AC-44D2-BA6E-73D2BC3D437A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{545DC619-E6AC-44D2-BA6E-73D2BC3D437A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{545DC619-E6AC-44D2-BA6E-73D2BC3D437A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A4D8DC1-4728-4E9A-BB1A-3A275D62180F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A4D8DC1-4728-4E9A-BB1A-3A275D62180F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A4D8DC1-4728-4E9A-BB1A-3A275D62180F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A4D8DC1-4728-4E9A-BB1A-3A275D62180F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F067FF0-041E-4489-9712-81555A0437C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F067FF0-041E-4489-9712-81555A0437C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F067FF0-041E-4489-9712-81555A0437C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F067FF0-041E-4489-9712-81555A0437C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4358B02-D53D-4A1A-8717-3B939A0EF7F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4358B02-D53D-4A1A-8717-3B939A0EF7F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4358B02-D53D-4A1A-8717-3B939A0EF7F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4358B02-D53D-4A1A-8717-3B939A0EF7F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

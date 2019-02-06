@@ -44,27 +44,27 @@ namespace IfiNavetNotifier
                 htmlDoc.LoadHtml(data);
 
                 IfiEvent ievent = new IfiEvent
-                {
-                    Name = htmlDoc.DocumentNode.SelectSingleNode("/html/body/div[3]/div/div[1]/h1").InnerText,
-                    Food = htmlDoc.DocumentNode.SelectSingleNode("/html/body/div[3]/div/div[1]/div[2]/div[3]/p").InnerText,
-                    Link = url
-                };
-
-                //Places left
-                var temp = htmlDoc.DocumentNode.SelectSingleNode("/html/body/div[3]/div/div[1]/div[2]/div[4]/p").InnerHtml.Split("</span>");
-                var temp2 = String.Concat(temp.Where(n => Regex.IsMatch(n, @"^\d")).Select(x => x[0]));
-                var temp3 = int.TryParse(temp2,out var placesLeft);
-                ievent.PlacesLeft = placesLeft;
-
-                //Date
-                var date = htmlDoc.DocumentNode.SelectSingleNode("/html/body/div[3]/div/div[1]/div[2]/div[1]/p").InnerText;
-               
-                var dt = date.toDate("dd.MM.yyyy HH:mm");
-                if (dt.HasValue)
-                {
-                    ievent.Date = dt.Value;
-
-                }
+                                 {
+                                     Name = htmlDoc.DocumentNode.SelectSingleNode("/html/body/div[3]/div/div[1]/h1").InnerText,
+                                     Food = htmlDoc.DocumentNode.SelectSingleNode("/html/body/div[3]/div/div[1]/div[2]/div[3]/p").InnerText,
+                                     Link = url
+                                 };
+                 
+                                 //Places left
+                                 var temp = htmlDoc.DocumentNode.SelectSingleNode("/html/body/div[3]/div/div[1]/div[2]/div[4]/p").InnerHtml.Split("</span>");
+                                 var temp2 = String.Concat(temp.Where(n => Regex.IsMatch(n, @"^\d")).Select(x => x[0]));
+                                 var temp3 = int.TryParse(temp2,out var placesLeft);
+                                 ievent.PlacesLeft = placesLeft;
+                 
+                                 //Date
+                                 var date = htmlDoc.DocumentNode.SelectSingleNode("/html/body/div[3]/div/div[1]/div[2]/div[1]/p").InnerText;
+                                
+                                 var dt = date.toDate("dd.MM.yyyy HH:mm");
+                                 if (dt.HasValue)
+                                 {
+                                     ievent.Date = dt.Value;
+                 
+                                 }
 
                 events.Add(ievent);
             }
