@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp2.2</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Folder Include="UserLogins\Queries" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\IfiNavet.Core\IfiNavet.Core.csproj" />
+      <ProjectReference Include="..\IfiNavet.Infrastructure\IfiNavet.Infrastructure.csproj" />
+      <ProjectReference Include="..\IfiNavet.Persistence\IfiNavet.Persistence.csproj" />
+    </ItemGroup>
+
+</Project>

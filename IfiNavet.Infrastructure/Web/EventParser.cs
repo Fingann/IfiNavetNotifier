@@ -11,32 +11,40 @@ using IfiNavet.Core.Interfaces.Web;
 
 namespace IfiNavet.Infrastructure.Web
 {
-    public class EventParser : IWebParser<IfiEvent>
+    public class EventParser 
     {
         private Uri BaseUri { get;  }
-        private CookieAwareWebClient Client { get; }
-        private CookieAwareHttpClient Hclient { get; }
+        private CookieAwareHttpClient Client { get; }
         public EventParser(UserLogin user = null)
         {
-            Client = new CookieAwareWebClient();
-            Hclient = new CookieAwareHttpClient();
+            Client = new CookieAwareHttpClient();
+            BaseUri = new Uri("http://ifinavet.no/");
+
             if (user != null)
             {
-                
-                Client.Login("https://ifinavet.no/login", user);
-                //new
+                LoginUser(user);
                 
             }
-            BaseUri = new Uri("http://ifinavet.no/");
             
             
+        }
+
+        private async void LoginUser(UserLogin user)
+        {
+            var loginCredentials = new List<KeyValuePair<string, string>>()
+            {
+                new KeyValuePair<string, string>("username", user.Username),
+                new KeyValuePair<string, string>("password", user.Password),
+                new KeyValuePair<string, string>("referer", "/"),
+            };
+            await Client.PostAsync(new Uri(BaseUri, "login"), loginCredentials);
         }
 
         public async Task<IEnumerable<Uri>> GetEventLinks()
         {
             HtmlDocument doc = new HtmlDocument();
             var uri = new Uri(BaseUri + "event");    
-            var html = await Client.DownloadStringTaskAsync(uri);
+            var html = await Client.GetAsync(uri);
             doc.LoadHtml(html);
             
             //var doc = await web.LoadFromWebAsync(BaseUri + "event");
@@ -51,14 +59,16 @@ namespace IfiNavet.Infrastructure.Web
 
         public async Task<IfiEvent> GetEvent(Uri uri)
         {
+            
             HtmlDocument doc = new HtmlDocument();
              
-            var html = await Client.DownloadStringTaskAsync(uri);
+            var html = await Client.GetAsync(uri);
             doc.LoadHtml(html);
 
             //var doc = await web.LoadFromWebAsync(uri.ToString());
             //var doc = web.Load(await Client.DownloadStringTaskAsync(uri));
-            return EventMapper.Map(uri, doc);
+            var parsedEvent = EventMapper.Map(uri, doc);
+            return parsedEvent;
         }
 
     }

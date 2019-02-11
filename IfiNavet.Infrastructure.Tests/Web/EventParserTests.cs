@@ -11,7 +11,7 @@ namespace IfiNavet.Infrastructure.Tests.Web
     [TestFixture]
     public class WebParserTests
     {
-        public IWebParser<IfiEvent> WebParser { get; set; }
+        public EventParser WebParser { get; set; }
         
         [SetUp]
         public void init()
@@ -34,8 +34,6 @@ namespace IfiNavet.Infrastructure.Tests.Web
         [TestCase("http://ifinavet.no/event/222", ExpectedResult = "Bedriftspresentasjon med EVRY" )]
         [TestCase("http://ifinavet.no/event/225",ExpectedResult = "Bedriftspresentasjon med Itera")]
         [TestCase("http://ifinavet.no/event/229",ExpectedResult = "Bedriftspresentasjon med Computas")]
-        [TestCase("",ExpectedResult = null)]
-        [TestCase(null,ExpectedResult = null)]  
        public string Eventid_should_return_Event(string link)
         {
             var temp = WebParser.GetEvent(new Uri(link));

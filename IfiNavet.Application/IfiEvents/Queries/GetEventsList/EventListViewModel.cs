@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using IfiNavet.Core.Interfaces.Entities;
+using System;
 
-namespace IfiNavet.Core.Entities
+namespace IfiNavet.Application.IfiEvents.Queries.GetEventsList
 {
-    public class IfiEvent : EntityBase<int>
+    public class EventListViewModel
     {
         public string Name { get; set; }
         public string Food { get; set; }
@@ -13,6 +11,7 @@ namespace IfiNavet.Core.Entities
         public Uri Link { get; set; }
         public DateTime Date { get; set; }
         public bool Open { get; set; }
-        
+
     }
 }
+

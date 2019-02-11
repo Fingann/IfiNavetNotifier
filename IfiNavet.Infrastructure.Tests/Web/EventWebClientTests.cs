@@ -1,3 +1,4 @@
+using System.Linq;
 using IfiNavet.Core.Entities.Users;
 using IfiNavet.Infrastructure.Web;
 using NUnit.Framework;
@@ -12,14 +13,14 @@ namespace IfiNavet.Infrastructure.Tests.Web
         [SetUp]
         public void SetUp()
         {
-            Client = new EventWebClient(new UserLogin("sondrefi","stemmer123"));
+            Client = new EventWebClient(new UserLogin("sondrefi","ifibot123"));
         }
 
         [Test]
         public void Get_Events_should_Return_list()
         {
-            var events = Client.GetEvents();
-            Assert.IsNotEmpty(events.Result);
+            var events = Client.GetEvents().Result;
+            Assert.IsNotEmpty(events);
         }
     }
 }
