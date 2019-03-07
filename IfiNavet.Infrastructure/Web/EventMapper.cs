@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using HtmlAgilityPack;
 using IfiNavet.Core.Entities;
+using IfiNavet.Core.Entities.Events;
 using IfiNavet.Infrastructure.Extentions;
 
 
@@ -18,8 +19,8 @@ namespace IfiNavet.Infrastructure.Web
             {
                 Name = doc.DocumentNode.SelectSingleNode("/html/body/div[3]/div/div[1]/h1").InnerText,
                 Food = doc.DocumentNode.SelectSingleNode("/html/body/div[3]/div/div[1]/div[2]/div[3]/p").InnerText,
-                Location = doc.DocumentNode.SelectSingleNode("/html/body/div[3]/div/div[1]/div[2]/div[2]/p").InnerText,
-                Link = url,
+                Location = doc.DocumentNode.SelectSingleNode("/html/body/div[3]/div/div[1]/div[2]/div[2]/p").InnerText.Trim(),
+                Link = url.ToString(),
                 PlacesLeft = GetPlacesLeft(doc),
                 Date = GetDate(doc),
                 Open = IsOpen(doc)

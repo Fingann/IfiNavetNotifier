@@ -13,7 +13,7 @@ namespace IfiNavet.Infrastructure.Tests.Web
         [SetUp]
         public void SetUp()
         {
-            Client = new EventWebClient(new UserLogin("sondrefi","ifibot123"));
+            Client = new EventWebClient();
         }
 
         [Test]
@@ -21,6 +21,13 @@ namespace IfiNavet.Infrastructure.Tests.Web
         {
             var events = Client.GetEvents().Result;
             Assert.IsNotEmpty(events);
+        }
+        [Test]
+        public void Login_should_Return_true()
+        {
+            var events = Client.LoggInn(new UserLogin("sondrefi","ifibot123")).Result;
+            Assert.IsTrue(events);
+           
         }
     }
 }

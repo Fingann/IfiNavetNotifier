@@ -6,8 +6,8 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 using IfiNavet.Core.Entities;
+using IfiNavet.Core.Entities.Events;
 using IfiNavet.Core.Entities.Users;
-using IfiNavet.Core.Interfaces.Web;
 
 namespace IfiNavet.Infrastructure.Web
 {
@@ -15,21 +15,15 @@ namespace IfiNavet.Infrastructure.Web
     {
         private Uri BaseUri { get;  }
         private CookieAwareHttpClient Client { get; }
+        private bool LoggedInn { get; set; }
         public EventParser(UserLogin user = null)
         {
             Client = new CookieAwareHttpClient();
             BaseUri = new Uri("http://ifinavet.no/");
-
-            if (user != null)
-            {
-                LoginUser(user);
-                
-            }
-            
-            
+            LoggedInn = false;
         }
 
-        private async void LoginUser(UserLogin user)
+        public async Task<bool> LoginUser(UserLogin user)
         {
             var loginCredentials = new List<KeyValuePair<string, string>>()
             {
@@ -37,7 +31,9 @@ namespace IfiNavet.Infrastructure.Web
                 new KeyValuePair<string, string>("password", user.Password),
                 new KeyValuePair<string, string>("referer", "/"),
             };
-            await Client.PostAsync(new Uri(BaseUri, "login"), loginCredentials);
+            var result = await Client.PostAsync(new Uri(BaseUri, "login"), loginCredentials);
+            //TODO: Logic for checking if login was success
+            return true;
         }
 
         public async Task<IEnumerable<Uri>> GetEventLinks()

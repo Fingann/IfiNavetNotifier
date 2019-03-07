@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using IfiNavet.Core.Interfaces.Web;
 using IfiNavet.Infrastructure.Web;
 using NUnit.Framework;
 using System.Linq;

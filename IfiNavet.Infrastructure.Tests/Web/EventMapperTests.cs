@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using IfiNavet.Core.Entities;
+using IfiNavet.Core.Entities.Events;
 using IfiNavet.Core.Entities.Users;
 using IfiNavet.Infrastructure.Web;
 using NUnit.Framework;

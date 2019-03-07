@@ -7,7 +7,6 @@
   <ItemGroup>
     <Folder Include="Entities\" />
     <Folder Include="Interfaces\" />
-    <Folder Include="Interfaces\Web\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Class1.cs" />

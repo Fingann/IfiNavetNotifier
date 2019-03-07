@@ -6,19 +6,21 @@ using IfiNavet.Core.Entities;
 using IfiNavet.Core.Entities.Users;
 using IfiNavet.Infrastructure.Extentions;
 using System.Runtime.CompilerServices;
+using IfiNavet.Application.Web;
+using IfiNavet.Core.Entities.Events;
+
 [assembly:InternalsVisibleTo("IfiNavet.Infrastructure.Tests")]
 
 namespace IfiNavet.Infrastructure.Web
 {
-    using IfiNavet.Core.Interfaces.Web;
-    public class EventWebClient :IEventClient
+    public class EventWebClient : IEventClient
     {
         private CookieAwareHttpClient Client { get; }
         internal EventParser Parser { get;  } 
-        public EventWebClient( UserLogin user = null)
+        public EventWebClient()
         {
             Client = new CookieAwareHttpClient();
-            Parser = user != null ? new EventParser(user) : new EventParser();
+            Parser = new EventParser();
         }
 
 
@@ -27,7 +29,7 @@ namespace IfiNavet.Infrastructure.Web
             var result = await Parser.GetEventLinks();
             ConcurrentBag<IfiEvent> events = new ConcurrentBag<IfiEvent>();
 
-            await result.ForEachAsync(100, (async uri => events.Add(await Parser.GetEvent(uri))));
+            await result.ForEachAsync(100, async uri => events.Add(await Parser.GetEvent(uri)));
 
             return events;
         }
@@ -36,7 +38,10 @@ namespace IfiNavet.Infrastructure.Web
         {
             return await Parser.GetEvent(uri);
         }
-        
-        
+
+        public async Task<bool> LoggInn(UserLogin user)
+        {
+            return await Parser.LoginUser(user);
+        }
     }
 }

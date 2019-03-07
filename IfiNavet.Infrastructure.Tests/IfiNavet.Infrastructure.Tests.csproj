@@ -18,6 +18,7 @@
     <Folder Include="Web\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\IfiNavet.Application\IfiNavet.Application.csproj" />
     <ProjectReference Include="..\IfiNavet.Core\IfiNavet.Core.csproj" />
     <ProjectReference Include="..\IfiNavet.Infrastructure\IfiNavet.Infrastructure.csproj" />
   </ItemGroup>
