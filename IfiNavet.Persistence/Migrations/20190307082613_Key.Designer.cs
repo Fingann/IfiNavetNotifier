@@ -4,14 +4,16 @@ using IfiNavet.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IfiNavet.Persistence.Migrations
 {
     [DbContext(typeof(IfiNavetDbContext))]
-    partial class IfiNavetDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190307082613_Key")]
+    partial class Key
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

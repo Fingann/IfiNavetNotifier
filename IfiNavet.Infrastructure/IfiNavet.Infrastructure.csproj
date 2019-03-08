@@ -14,6 +14,12 @@
     <ProjectReference Include="..\IfiNavet.Application\IfiNavet.Application.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="InfluxDB.Collector, Version=1.1.1.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\..\.nuget\packages\influxdb.collector\1.1.1-dev-10109\lib\netstandard2.0\InfluxDB.Collector.dll</HintPath>
+    </Reference>
+    <Reference Include="InfluxDB.LineProtocol, Version=1.1.1.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\..\.nuget\packages\influxdb.lineprotocol\1.1.1-dev-10109\lib\netstandard2.0\InfluxDB.LineProtocol.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Extensions.Hosting.Abstractions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
       <HintPath>..\..\..\..\..\..\usr\local\share\dotnet\sdk\NuGetFallbackFolder\microsoft.extensions.hosting.abstractions\2.2.0\lib\netstandard2.0\Microsoft.Extensions.Hosting.Abstractions.dll</HintPath>
     </Reference>

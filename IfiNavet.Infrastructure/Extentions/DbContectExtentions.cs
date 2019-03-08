@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using IfiNavet.Core.Entities.Events;
 using Microsoft.EntityFrameworkCore;
 
 namespace IfiNavet.Infrastructure.Extentions
@@ -26,6 +28,18 @@ namespace IfiNavet.Infrastructure.Extentions
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+        public static void DetachLocal<T>(this DbContext context, T t, string entryId) 
+            where T : IfiEvent 
+        {
+            var local = context.Set<T>()
+                .Local
+                .FirstOrDefault(entry => entry.Link.Equals(entryId));
+            if (local == new IfiEvent())
+            {
+                context.Entry(local).State = EntityState.Detached;
+            }
+            context.Entry(t).State = EntityState.Modified;
         }
     }
 }
