@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 using IfiNavetNotifier.Extentions;
+using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 
 namespace IfiNavetNotifier
 {
@@ -52,10 +53,18 @@ namespace IfiNavetNotifier
                 };
 
                 //Places left
-                var temp = htmlDoc.DocumentNode.SelectSingleNode("/html/body/div[3]/div/div[1]/div[2]/div[4]/p").InnerHtml.Split("</span>");
-                var temp2 = String.Concat(temp.Where(n => Regex.IsMatch(n, @"^\d")).Select(x => x[0]));
-                var temp3 = int.TryParse(temp2,out var placesLeft);
-                ievent.PlacesLeft = placesLeft;
+                var temp = htmlDoc.DocumentNode.SelectSingleNode("/html/body/div[3]/div/div[1]/div[2]/div[4]/p");
+                if (temp != null)
+                {
+                    var temp15 = temp.InnerHtml.Split("</span>");
+                    var temp2 = String.Concat(temp15.Where(n => Regex.IsMatch(n, @"^\d")).Select(x => x[0]));
+                    var temp3 = int.TryParse(temp2,out var placesLeft);
+                    ievent.PlacesLeft = placesLeft;
+                }
+                else
+                {
+                    ievent.PlacesLeft = 999;
+                }
 
                 //Date
                 var date = htmlDoc.DocumentNode.SelectSingleNode("/html/body/div[3]/div/div[1]/div[2]/div[1]/p").InnerText;
