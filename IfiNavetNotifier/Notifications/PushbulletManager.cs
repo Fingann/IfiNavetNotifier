@@ -20,25 +20,27 @@ namespace IfiNavetNotifier.Notifications
 
         public void Send(IEnumerable<IfiEvent> events)
         {
-            string body = string.Empty;
-            foreach (var ifiEvent in events)
-            {
-                body += ifiEvent + Environment.NewLine;
-            }
-            var plainTextContent = body;
+           
+            
 
             PushNoteRequest reqeust;
+            
             if (events.Count() == 1)
             {
                 reqeust = new PushNoteRequest()
                 {
                     ChannelTag = "ifibot",
                     Title = $"{events.First().PlacesLeft} - {events.First().Name}",
-                    Body = body
+                    Body = events.First().ToString()
                 };
             }
             else
             {
+                string body = string.Empty;
+                foreach (var ifiEvent in events)
+                {
+                    body += ifiEvent.Name+ Environment.NewLine+ ifiEvent + Environment.NewLine;
+                }
                 reqeust = new PushNoteRequest()
                 {
                     ChannelTag = "ifibot",

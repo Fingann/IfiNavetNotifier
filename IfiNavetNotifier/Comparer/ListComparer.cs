@@ -6,26 +6,25 @@ namespace IfiNavetNotifier
 {
     public class ListComparer 
     {
-        public List<IfiEvent> Compare(IEnumerable<IfiEvent> a, IEnumerable<IfiEvent> b)
+        public List<IfiEvent> Compare(IEnumerable<IfiEvent> newEvents, IEnumerable<IfiEvent> oldEvents)
         {
-            if (a == null || b == null)
+            if (newEvents == null || oldEvents == null)
             {
                 return new List<IfiEvent>();
             }
+            
             List<IfiEvent> tempList = new List<IfiEvent>();
-            foreach (var item in a)
+            
+            foreach (var item in newEvents)
             {
-                var bItem = b.FirstOrDefault(x => x.Link == item.Link);
-                if (bItem != null)
+                var oldItem = oldEvents.FirstOrDefault(x => x.Link == item.Link);
+                if (oldItem == null) continue;
+
+                if (oldItem.PlacesLeft == 0 && item.PlacesLeft > 0)
                 {
-                    if (bItem.PlacesLeft != item.PlacesLeft)
-                    {
-                        tempList.Add(item);
-                    }
+                    tempList.Add(item);
                 }
             }
-
-
             return tempList; 
         }
 
