@@ -36,9 +36,9 @@ namespace IfiNavetNotifier.Web
             return await Parser.GetEvent(uri);
         }
 
-        public async Task<bool> LoggInn(UserLogin user)
+        public bool LoggInn(UserLogin user)
         {
-            return await Parser.LoginUser(user);
+            return Parser.LoginUser(user);
         }
     }
 }

@@ -10,32 +10,24 @@ namespace IfiNavetNotifier.Web
 {
     public class CookieAwareHttpClient
     {
-        private  CookieContainer CookieContainer { get; }
-
-        private  HttpClientHandler Handler { get;  }
-        private  HttpClient Client { get; }
-
-        public CookieAwareHttpClient()
-        {
-            CookieContainer = new CookieContainer();
-            Handler = new HttpClientHandler(){ CookieContainer = CookieContainer, UseCookies = true};
-            Client = new HttpClient(Handler,false);
-        }
-
+        
+        
         public async Task<string> GetAsync(Uri uri,CancellationToken token = new CancellationToken())
         {
-            
-                return await Client.GetStringAsync(uri);
+    
+            var content = await StaticHttpClient.Client.GetStringAsync(uri);
+            if (content.Contains("sondrefi"))
+            {
+                Console.WriteLine("LOGGIN");
+            }
+            return content;
            
         }
-        public async Task<string> PostAsync(Uri uri,IEnumerable<KeyValuePair<string,string>> values,CancellationToken token = new CancellationToken())
-        {
-                var content = new FormUrlEncodedContent(values);
-            
-            //content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/x-www-form-urlencoded");
-               var response =await Client.PostAsync(uri, content, token);
-            
-               return response.Content.ReadAsStringAsync().Result;
+        public string PostAsync(Uri uri,FormUrlEncodedContent content)
+        {                
+               var response =StaticHttpClient.Client.PostAsync(uri, content).Result;
+               var temp = response.Content.ReadAsStringAsync().Result;
+               return temp;
             
         }
         

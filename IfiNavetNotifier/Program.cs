@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using IfiNavetNotifier.Database;
@@ -16,13 +18,8 @@ namespace IfiNavetNotifier
             INotifyManager pushManager = new PushbulletManager();
             IEventClient webParser = new EventWebClient();
             IListComparer comparer = new ListComparer();
-            
-            
-            webParser.LoggInn(new UserLogin(
-                Environment.GetEnvironmentVariable("ASPNETCORE_USER"),
-                Environment.GetEnvironmentVariable("ASPNETCORE_PASSWORD")
-                ));
-            
+         
+            Login();
             TimeSpan howOftenToRun = TimeSpan.FromSeconds(10);
 
             var context = new IfiEventContext();
@@ -39,6 +36,22 @@ namespace IfiNavetNotifier
                     Thread.Sleep(1000*60*60);
                 }
             
+        }
+
+        public static void Login()
+        {
+            
+            var loginCredentials = new List<KeyValuePair<string, string>>()
+            {
+                new KeyValuePair<string, string>("username", Environment.GetEnvironmentVariable("ASPNETCORE_USER")),
+                new KeyValuePair<string, string>("password", Environment.GetEnvironmentVariable("ASPNETCORE_PASSWORD"))
+                
+            };
+            var content = new FormUrlEncodedContent(loginCredentials);
+
+            var response =StaticHttpClient.Client.PostAsync("https://ifinavet.no/login", content).Result;
+            var res = response.Content.ReadAsStringAsync().Result;
+
         }
 
         }

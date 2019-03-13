@@ -10,6 +10,6 @@ namespace IfiNavetNotifier.Web
         {    
             Task<IEnumerable<IfiEvent>> GetEvents();       
             Task<IfiEvent> GetEvent(Uri uri);
-            Task<bool> LoggInn(UserLogin user);
+            bool LoggInn(UserLogin user);
         }
     }

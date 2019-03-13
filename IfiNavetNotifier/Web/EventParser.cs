@@ -21,7 +21,7 @@ namespace IfiNavetNotifier.Web
             LoggedInn = false;
         }
 
-        public async Task<bool> LoginUser(UserLogin user)
+        public bool LoginUser(UserLogin user)
         {
             var loginCredentials = new List<KeyValuePair<string, string>>()
             {
@@ -30,7 +30,7 @@ namespace IfiNavetNotifier.Web
                 
             };
             var url = new Uri(BaseUri, "login");
-            var response = await Client.PostAsync(url, loginCredentials);
+            var response = Client.PostAsync(url, new FormUrlEncodedContent(loginCredentials));
            
             if (response.Contains("Logg ut"))
             {
