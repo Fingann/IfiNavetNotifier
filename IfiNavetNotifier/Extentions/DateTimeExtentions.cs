@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Threading;
 
 namespace IfiNavetNotifier.Extentions
 {
@@ -12,12 +13,13 @@ namespace IfiNavetNotifier.Extentions
             const DateTimeStyles style = DateTimeStyles.AllowWhiteSpaces;
             if (dateFmt == null)
             {
-                var dateInfo = System.Threading.Thread.CurrentThread.CurrentCulture.DateTimeFormat;
+                var dateInfo = Thread.CurrentThread.CurrentCulture.DateTimeFormat;
                 dateFmt = dateInfo.GetAllDateTimePatterns();
             }
+
             DateTime? result = null;
             if (DateTime.TryParseExact(dateTimeStr, dateFmt,
-               CultureInfo.InvariantCulture, style, out DateTime dt)) result = dt;
+                CultureInfo.InvariantCulture, style, out var dt)) result = dt;
             return result;
         }
 
@@ -26,7 +28,7 @@ namespace IfiNavetNotifier.Extentions
             // example:   var dt="2011-03-21 13:26".toDate("yyyy-MM-dd HH:mm");
             // or simply  var dt="2011-03-21 13:26".toDate();        
             // call overloaded function with string array param
-            string[] dateFmtArr = dateFmt == null ? null : new string[] { dateFmt };
+            var dateFmtArr = dateFmt == null ? null : new[] {dateFmt};
             return toDate(dateTimeStr, dateFmtArr);
         }
     }

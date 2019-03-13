@@ -3,30 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using PushbulletSharp;
 using PushbulletSharp.Models.Requests;
-using PushbulletSharp.Models.Requests.Ephemerals;
 
 namespace IfiNavetNotifier.Notifications
 {
     public class PushbulletManager : INotifyManager
     {
-        public PushbulletClient Client { get; set; }
-        public string ApiKey { get; set; }
-
         public PushbulletManager()
         {
             ApiKey = Environment.GetEnvironmentVariable("ASPNETCORE_APIKEY");
             Client = new PushbulletClient(ApiKey, TimeZoneInfo.Local);
         }
 
-        public void Send(Tuple<string,IfiEvent> ifiEvent)
+        public PushbulletClient Client { get; set; }
+        public string ApiKey { get; set; }
+
+        public void Send(Tuple<string, IfiEvent> ifiEvent)
         {
             PushNoteRequest reqeust;
-            
-            reqeust = new PushNoteRequest()
+
+            reqeust = new PushNoteRequest
             {
                 ChannelTag = "ifibot",
-                Title = ifiEvent.Item1 + " - "+ ifiEvent.Item2.Name ,
-                Body = "Link: " +ifiEvent.Item2.Link
+                Title = ifiEvent.Item1 + " - " + ifiEvent.Item2.Name,
+                Body = "Link: " + ifiEvent.Item2.Link
             };
             PushNote(reqeust);
         }
@@ -34,10 +33,10 @@ namespace IfiNavetNotifier.Notifications
         public void Send(IEnumerable<IfiEvent> events)
         {
             PushNoteRequest reqeust;
-            
+
             if (events.Count() == 1)
             {
-                reqeust = new PushNoteRequest()
+                reqeust = new PushNoteRequest
                 {
                     ChannelTag = "ifibot",
                     Title = $"{events.First().PlacesLeft} - {events.First().Name}",
@@ -46,22 +45,19 @@ namespace IfiNavetNotifier.Notifications
             }
             else
             {
-                string body = string.Empty;
+                var body = string.Empty;
                 foreach (var ifiEvent in events)
-                {
-                    body += ifiEvent.Name+ Environment.NewLine+ "Places Left = "+ifiEvent.Name+ Environment.NewLine+ ifiEvent + Environment.NewLine;
-                }
-                reqeust = new PushNoteRequest()
+                    body += ifiEvent.Name + Environment.NewLine + "Places Left = " + ifiEvent.Name +
+                            Environment.NewLine + ifiEvent + Environment.NewLine;
+                reqeust = new PushNoteRequest
                 {
                     ChannelTag = "ifibot",
                     Title = $"{events.Count()} events updated",
                     Body = body
                 };
-
             }
 
             PushNote(reqeust);
-            
         }
 
         private void PushNote(PushNoteRequest request)
@@ -75,6 +71,5 @@ namespace IfiNavetNotifier.Notifications
                 Console.WriteLine(e);
             }
         }
-        
     }
 }

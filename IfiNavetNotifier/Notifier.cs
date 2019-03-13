@@ -1,7 +1,5 @@
 ﻿using System;
-
 using System.Linq;
-
 using System.Threading;
 using System.Threading.Tasks;
 using IfiNavetNotifier.BusinessRules;
@@ -13,14 +11,6 @@ namespace IfiNavetNotifier
 {
     public class Notifier
     {
-
-        private IEventClient WebParser { get; }
-      
-        private IfiEventContext Context { get; }
-        private INotifyManager PushManager { get; }
-        private IListComparer Listcomparer { get; }
-        public BusinessRuleChecker BusinessRuleChecker { get; set; }    
-
         public Notifier(IfiEventContext context, IEventClient webParser, INotifyManager pushManager,
             IListComparer listComparer)
         {
@@ -28,9 +18,15 @@ namespace IfiNavetNotifier
             WebParser = webParser;
             PushManager = pushManager;
             Listcomparer = listComparer;
-            BusinessRuleChecker= new BusinessRuleChecker();
-
+            BusinessRuleChecker = new BusinessRuleChecker();
         }
+
+        private IEventClient WebParser { get; }
+
+        private IfiEventContext Context { get; }
+        private INotifyManager PushManager { get; }
+        private IListComparer Listcomparer { get; }
+        public BusinessRuleChecker BusinessRuleChecker { get; set; }
 
 
         public async Task CheckEvents()
@@ -40,19 +36,14 @@ namespace IfiNavetNotifier
 
             var dbevents = Context.IfiEvent.ToList();
 
-            
+
             var diff = BusinessRuleChecker.Enfocre(ifiEvents.ToList(), dbevents);
-            
-            
+
+
             if (diff.Any())
-            {
                 foreach (var ifiEvent in diff)
-                {
                     PushManager.Send(ifiEvent);
-                }
-                
-            }
-            
+
             Context.RemoveRange(dbevents);
             await Context.SaveChangesAsync();
             Context.AddRange(ifiEvents);
@@ -63,8 +54,7 @@ namespace IfiNavetNotifier
 
         public void Run(TimeSpan periodTimeSpan)
         {
- 
-            CancellationToken ct = new CancellationToken();
+            var ct = new CancellationToken();
             PeriodicTask(periodTimeSpan, ct);
         }
 
@@ -77,15 +67,10 @@ namespace IfiNavetNotifier
             }
         }
 
-        public  void InitializeDb()
+        public void InitializeDb()
         {
             Context.AddRange(WebParser.GetEvents().Result);
             Context.SaveChanges();
         }
-
     }
-
-
-
-
 }

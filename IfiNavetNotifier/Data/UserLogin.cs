@@ -5,9 +5,10 @@ namespace IfiNavetNotifier
         public UserLogin(string username, string password)
         {
             Username = username;
-            Password = password;           
+            Password = password;
         }
-        public string Username { get;  }
-        public string Password { get;  }
+
+        public string Username { get; }
+        public string Password { get; }
     }
 }

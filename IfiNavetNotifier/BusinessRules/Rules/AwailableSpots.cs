@@ -1,6 +1,6 @@
 namespace IfiNavetNotifier.BusinessRules.Rules
 {
-    public class AwailableSpots: IBusinessRule
+    public class AwailableSpots : IBusinessRule
     {
         public string RuleName { get; } = "Available spots";
 

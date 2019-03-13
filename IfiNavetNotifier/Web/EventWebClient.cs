@@ -1,30 +1,28 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using IfiNavetNotifier.Extentions;
 
-[assembly:InternalsVisibleTo("IfiNavet.Infrastructure.Tests")]
+[assembly: InternalsVisibleTo("IfiNavet.Infrastructure.Tests")]
 
 namespace IfiNavetNotifier.Web
 {
     public class EventWebClient : IEventClient
     {
-        private CookieAwareHttpClient Client { get; }
-        internal EventParser Parser { get;  } 
-        public EventWebClient()
+        public EventWebClient(CookieClient cookieClient)
         {
-            Client = new CookieAwareHttpClient();
-            Parser = new EventParser();
+            Parser = new EventParser(cookieClient);
         }
+
+        internal EventParser Parser { get; }
 
 
         public async Task<IEnumerable<IfiEvent>> GetEvents()
         {
-            var result = await Parser.GetEventLinks();
-            ConcurrentBag<IfiEvent> events = new ConcurrentBag<IfiEvent>();
+            var result = await Parser.GetAllEventLinks();
+            var events = new ConcurrentBag<IfiEvent>();
 
             await result.ForEachAsync(100, async uri => events.Add(await Parser.GetEvent(uri)));
 
@@ -36,9 +34,9 @@ namespace IfiNavetNotifier.Web
             return await Parser.GetEvent(uri);
         }
 
-        public bool LoggInn(UserLogin user)
-        {
-            return Parser.LoginUser(user);
-        }
+//        public bool LoggInn(UserLogin user)
+//        {
+//            return Parser.LoginUser(user);
+//        }
     }
 }

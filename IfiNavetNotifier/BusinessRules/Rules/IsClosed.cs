@@ -1,6 +1,6 @@
 namespace IfiNavetNotifier.BusinessRules.Rules
 {
-    public class IsClosed: IBusinessRule
+    public class IsClosed : IBusinessRule
     {
         public string RuleName { get; } = "Closed";
 

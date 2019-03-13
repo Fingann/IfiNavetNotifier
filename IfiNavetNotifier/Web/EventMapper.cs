@@ -1,31 +1,28 @@
 ﻿using System;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using HtmlAgilityPack;
 using IfiNavetNotifier.Extentions;
-
 
 namespace IfiNavetNotifier.Web
 {
     internal static class EventMapper
     {
-
         public static IfiEvent Map(Uri url, HtmlDocument doc)
         {
-            IfiEvent ifiEvent = new IfiEvent
+            var ifiEvent = new IfiEvent
             {
-                Name = doc.DocumentNode.SelectSingleNode("/html/body/div[3]/div/div[1]/h1").InnerText,
+                Name = EventNameCleaner.CleanName(doc.DocumentNode.SelectSingleNode("/html/body/div[3]/div/div[1]/h1").InnerText),
                 Food = doc.DocumentNode.SelectSingleNode("/html/body/div[3]/div/div[1]/div[2]/div[3]/p").InnerText,
-                Location = doc.DocumentNode.SelectSingleNode("/html/body/div[3]/div/div[1]/div[2]/div[2]/p").InnerText.Trim(),
+                Location = doc.DocumentNode.SelectSingleNode("/html/body/div[3]/div/div[1]/div[2]/div[2]/p").InnerText
+                    .Trim(),
                 Link = url.ToString(),
                 PlacesLeft = GetPlacesLeft(doc),
                 Date = GetDate(doc)
-                
             };
+            
             ifiEvent.Open = IsOpen(doc, ifiEvent);
             return ifiEvent;
-
         }
 
         private static bool IsOpen(HtmlDocument doc, IfiEvent ifiEvent)
@@ -34,10 +31,7 @@ namespace IfiNavetNotifier.Web
             switch (buttonText)
             {
                 case "Logg inn":
-                    if (ifiEvent.Date > DateTime.Now)
-                    {
-                        return true;
-                    }
+                    if (ifiEvent.Date > DateTime.Now) return true;
                     return false;
                 case "Du er påmeldt, meld deg av":
                     return true;
@@ -54,26 +48,19 @@ namespace IfiNavetNotifier.Web
         {
             var placesLeftString = htmlDoc.DocumentNode
                 .SelectSingleNode("/html/body/div[3]/div/div[1]/div[2]/div[4]/p").ChildNodes?
-                .Where(n => n is HtmlTextNode && Regex.IsMatch(n.InnerText,@"\d")).
-                Aggregate(string.Empty, (a,b) => a + b.InnerText);
-            
+                .Where(n => n is HtmlTextNode && Regex.IsMatch(n.InnerText, @"\d"))
+                .Aggregate(string.Empty, (a, b) => a + b.InnerText);
+
             return int.TryParse(placesLeftString, out var value) ? value : 0;
-         
-         
-            
         }
 
         private static DateTime GetDate(HtmlDocument htmlDoc)
         {
             var date = htmlDoc.DocumentNode.SelectSingleNode("/html/body/div[3]/div/div[1]/div[2]/div[1]/p").InnerText;
             var dt = date.toDate("dd.MM.yyyy HH:mm");
-            if (dt.HasValue)
-           {
-                return dt.Value;
-           }
+            if (dt.HasValue) return dt.Value;
 
             return new DateTime();
         }
-
     }
 }
