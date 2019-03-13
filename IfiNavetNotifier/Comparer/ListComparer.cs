@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace IfiNavetNotifier
 {
-    public class ListComparer 
+    public class ListComparer :IListComparer
     {
         public List<IfiEvent> Compare(IEnumerable<IfiEvent> newEvents, IEnumerable<IfiEvent> oldEvents)
         {
@@ -21,6 +21,8 @@ namespace IfiNavetNotifier
                 if (oldItem == null) continue;
 
                 if (oldItem.PlacesLeft == 0 && item.PlacesLeft > 0)
+                //if (oldItem.PlacesLeft != item.PlacesLeft )
+
                 {
                     tempList.Add(item);
                 }

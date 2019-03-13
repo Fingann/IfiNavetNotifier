@@ -11,6 +11,8 @@ namespace IfiNavetNotifier
         public DateTime Date { get; set; }
         public string Food { get; set; }
         public int PlacesLeft { get; set; }
+        public string Location { get; set; }
+        public bool Open { get; set; }
 
 
 

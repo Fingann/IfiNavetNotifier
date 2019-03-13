@@ -14,15 +14,25 @@ namespace IfiNavetNotifier.Notifications
 
         public PushbulletManager()
         {
-            ApiKey = "o.Zww8BIzXgLyxQobNNIUDPAEbgkSQYYDf";
+            ApiKey = Environment.GetEnvironmentVariable("ASPNETCORE_APIKEY");
             Client = new PushbulletClient(ApiKey, TimeZoneInfo.Local);
+        }
+
+        public void Send(Tuple<string,IfiEvent> ifiEvent)
+        {
+            PushNoteRequest reqeust;
+            
+            reqeust = new PushNoteRequest()
+            {
+                ChannelTag = "ifibot",
+                Title = ifiEvent.Item1 + " - "+ ifiEvent.Item2.Name ,
+                Body = "Link: " +ifiEvent.Item2.Link
+            };
+            PushNote(reqeust);
         }
 
         public void Send(IEnumerable<IfiEvent> events)
         {
-           
-            
-
             PushNoteRequest reqeust;
             
             if (events.Count() == 1)
@@ -39,7 +49,7 @@ namespace IfiNavetNotifier.Notifications
                 string body = string.Empty;
                 foreach (var ifiEvent in events)
                 {
-                    body += ifiEvent.Name+ Environment.NewLine+ ifiEvent + Environment.NewLine;
+                    body += ifiEvent.Name+ Environment.NewLine+ "Places Left = "+ifiEvent.Name+ Environment.NewLine+ ifiEvent + Environment.NewLine;
                 }
                 reqeust = new PushNoteRequest()
                 {
@@ -50,15 +60,21 @@ namespace IfiNavetNotifier.Notifications
 
             }
 
+            PushNote(reqeust);
+            
+        }
+
+        private void PushNote(PushNoteRequest request)
+        {
             try
             {
-                var response = Client.PushNote(reqeust);
+                var response = Client.PushNote(request);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
             }
-            
         }
+        
     }
 }

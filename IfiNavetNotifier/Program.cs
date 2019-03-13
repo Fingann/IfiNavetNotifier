@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using IfiNavetNotifier.Database;
 using IfiNavetNotifier.Notifications;
-using IfiNavetNotifier.Test;
+using IfiNavetNotifier.Web;
 
 namespace IfiNavetNotifier
 {
@@ -14,19 +14,31 @@ namespace IfiNavetNotifier
             //TestCompare tc = new TestCompare();
 
             INotifyManager pushManager = new PushbulletManager();
-            IWebParser<IfiEvent> webParser = new IfiWebsiteParser();
+            IEventClient webParser = new EventWebClient();
+            IListComparer comparer = new ListComparer();
+            
+            
+            webParser.LoggInn(new UserLogin(
+                Environment.GetEnvironmentVariable("ASPNETCORE_USER"),
+                Environment.GetEnvironmentVariable("ASPNETCORE_PASSWORD")
+                ));
+            
+            TimeSpan howOftenToRun = TimeSpan.FromSeconds(10);
 
-            using (var context = new IfiEventContext())
-            {
-                Notifier notifier = new Notifier(context, webParser, pushManager);
-
-                notifier.Run();
+            var context = new IfiEventContext();
+           
+                //setting up database
+               
+                Notifier notifier = new Notifier(context, webParser, pushManager, comparer);
+                notifier.InitializeDb();
+             
+                notifier.Run(howOftenToRun);
 
                 while (true)
                 {
                     Thread.Sleep(1000*60*60);
                 }
-            }
+            
         }
 
         }
