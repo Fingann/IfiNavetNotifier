@@ -18,7 +18,7 @@ namespace IfiNavetNotifier
 
         public override string ToString()
         {
-            return $"{Date}{Environment.NewLine}Food = {Food}{Environment.NewLine}Link = {Link}";
+            return Name + " - " + Date;
         }
     }
 }

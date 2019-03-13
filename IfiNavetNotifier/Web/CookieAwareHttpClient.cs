@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Threading;
 
@@ -30,7 +31,10 @@ namespace IfiNavetNotifier.Web
         public async Task<string> PostAsync(Uri uri,IEnumerable<KeyValuePair<string,string>> values,CancellationToken token = new CancellationToken())
         {
                 var content = new FormUrlEncodedContent(values);
+            
+            //content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/x-www-form-urlencoded");
                var response =await Client.PostAsync(uri, content, token);
+            
                return response.Content.ReadAsStringAsync().Result;
             
         }

@@ -27,11 +27,19 @@ namespace IfiNavetNotifier.Web
             {
                 new KeyValuePair<string, string>("username", user.Username),
                 new KeyValuePair<string, string>("password", user.Password),
-                new KeyValuePair<string, string>("referer", "/"),
+                
             };
-            var result = await Client.PostAsync(new Uri(BaseUri, "login"), loginCredentials);
+            var url = new Uri(BaseUri, "login");
+            var response = await Client.PostAsync(url, loginCredentials);
+           
+            if (response.Contains("Logg ut"))
+            {
+                return true;
+            }
+
+            return false;
             //TODO: Logic for checking if login was success
-            return true;
+
         }
 
         public async Task<IEnumerable<Uri>> GetEventLinks()
