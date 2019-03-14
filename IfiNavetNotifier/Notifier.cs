@@ -11,13 +11,11 @@ namespace IfiNavetNotifier
 {
     public class Notifier
     {
-        public Notifier(IfiEventContext context, IEventClient webParser, INotifyManager pushManager,
-            IListComparer listComparer)
+        public Notifier(IfiEventContext context, IEventClient webParser, INotifyManager pushManager)
         {
             Context = context;
             WebParser = webParser;
             PushManager = pushManager;
-            Listcomparer = listComparer;
             BusinessRuleChecker = new BusinessRuleChecker();
         }
 
@@ -25,7 +23,6 @@ namespace IfiNavetNotifier
 
         private IfiEventContext Context { get; }
         private INotifyManager PushManager { get; }
-        private IListComparer Listcomparer { get; }
         public BusinessRuleChecker BusinessRuleChecker { get; set; }
 
 
@@ -55,14 +52,14 @@ namespace IfiNavetNotifier
         public void Run(TimeSpan periodTimeSpan)
         {
             var ct = new CancellationToken();
-            PeriodicTask(periodTimeSpan, ct);
+            PeriodicTask(CheckEvents, periodTimeSpan, ct);
         }
 
-        public async void PeriodicTask(TimeSpan interval, CancellationToken cancellationToken)
+        public async void PeriodicTask(Func<Task> task,TimeSpan interval, CancellationToken cancellationToken)
         {
             while (true)
             {
-                await CheckEvents();
+                await task();
                 await Task.Delay(interval, cancellationToken);
             }
         }

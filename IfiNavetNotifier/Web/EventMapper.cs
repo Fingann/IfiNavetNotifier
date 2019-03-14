@@ -33,12 +33,16 @@ namespace IfiNavetNotifier.Web
                 case "Logg inn":
                     if (ifiEvent.Date > DateTime.Now) return true;
                     return false;
+                case "Meld deg på":
+                    return true;
                 case "Du er påmeldt, meld deg av":
                     return true;
                 case "Påmelding er stengt":
                     return false;
                 case "Arrangementet er ikke åpnet for påmelding":
                     return false;
+                case "Arrangementet er fullt":
+                    return true;
                 default:
                     return false;
             }

@@ -38,7 +38,7 @@ namespace IfiNavetNotifier.BusinessRules
         {
             return AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes())
                 .Where(x => typeof(IBusinessRule).IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract)
-                .Select(x => (IBusinessRule) Activator.CreateInstance(x));
+                .Select(x => (IBusinessRule) Activator.CreateInstance(x)).OrderByDescending(x => x.Priority);
         }
     }
 }

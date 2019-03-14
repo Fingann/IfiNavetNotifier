@@ -16,10 +16,8 @@
   <ItemGroup>
     <Folder Include="Database\" />
     <Folder Include="Notifications\" />
-    <Folder Include="Test\" />
     <Folder Include="Extentions\" />
     <Folder Include="Data\" />
-    <Folder Include="Comparer\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="MailClient.cs" />

@@ -15,7 +15,6 @@ namespace IfiNavetNotifier
             INotifyManager pushManager = new PushbulletManager();
             var cookieClient = new CookieClient();
             IEventClient eventClient = new EventWebClient(cookieClient);
-            IListComparer comparer = new ListComparer();
 
 
             Login(cookieClient);
@@ -25,7 +24,7 @@ namespace IfiNavetNotifier
 
             //setting up database
 
-            var notifier = new Notifier(context, eventClient, pushManager, comparer);
+            var notifier = new Notifier(context, eventClient, pushManager);
             notifier.InitializeDb();
 
             notifier.Run(howOftenToRun);

@@ -3,6 +3,7 @@ namespace IfiNavetNotifier.BusinessRules.Rules
     public class AwailableSpots : IBusinessRule
     {
         public string RuleName { get; } = "Available spots";
+        public int Priority { get; } = 1;
 
         public bool CheckComplience(IfiEvent database, IfiEvent target)
         {
