@@ -1,8 +1,10 @@
+using IfiNavetNotifier.Extentions;
+
 namespace IfiNavetNotifier.BusinessRules.Rules
 {
     public class AwailableSpots : IBusinessRule
     {
-        public string RuleName { get; } = "Available spots";
+        public string RuleName { get; } = nameof(AwailableSpots).TitleCaseToRegular();
         public int Priority { get; } = 1;
 
         public bool CheckComplience(IfiEvent database, IfiEvent target)

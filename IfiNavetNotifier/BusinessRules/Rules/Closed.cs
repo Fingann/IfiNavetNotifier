@@ -1,8 +1,10 @@
+using IfiNavetNotifier.Extentions;
+
 namespace IfiNavetNotifier.BusinessRules.Rules
 {
-    public class IsClosed : IBusinessRule
+    public class Closed : IBusinessRule
     {
-        public string RuleName { get; } = "Closed";
+        public string RuleName { get; } = nameof(Closed).TitleCaseToRegular();
         public int Priority { get; } = 10;
 
         public bool CheckComplience(IfiEvent database, IfiEvent target)
