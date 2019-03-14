@@ -62,9 +62,7 @@ namespace IfiNavetNotifier.Web
         {
             var date = htmlDoc.DocumentNode.SelectSingleNode("/html/body/div[3]/div/div[1]/div[2]/div[1]/p").InnerText;
             var dt = date.toDate("dd.MM.yyyy HH:mm");
-            if (dt.HasValue) return dt.Value;
-
-            return new DateTime();
+            return dt ?? new DateTime();
         }
     }
 }

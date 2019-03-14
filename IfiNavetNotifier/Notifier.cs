@@ -34,11 +34,11 @@ namespace IfiNavetNotifier
             var dbevents = Context.IfiEvent.ToList();
 
 
-            var diff = BusinessRuleChecker.Enfocre(ifiEvents.ToList(), dbevents);
+            var flagedEvents = BusinessRuleChecker.Enfocre(ifiEvents.ToList(), dbevents).ToList();
 
-
-            if (diff.Any())
-                foreach (var ifiEvent in diff)
+    
+            if (flagedEvents.Any())
+                foreach (var ifiEvent in flagedEvents)
                     PushManager.Send(ifiEvent);
 
             Context.RemoveRange(dbevents);
@@ -46,12 +46,14 @@ namespace IfiNavetNotifier
             Context.AddRange(ifiEvents);
             await Context.SaveChangesAsync();
 
-            Console.WriteLine($"Ran updates: {diff.Count()}");
+            Console.WriteLine(DateTime.Now+$" - Events flaged: {flagedEvents.Count}");
         }
 
         public void Run(TimeSpan periodTimeSpan)
         {
-            var ct = new CancellationToken();
+            Console.WriteLine(DateTime.Now +" - Starting pariodic task with interval of: "+ periodTimeSpan);
+
+            var ct = new CancellationToken();          
             PeriodicTask(CheckEvents, periodTimeSpan, ct);
         }
 
@@ -66,8 +68,11 @@ namespace IfiNavetNotifier
 
         public void InitializeDb()
         {
+            Console.WriteLine(DateTime.Now +" - Initializing DB");
             Context.AddRange(WebParser.GetEvents().Result);
             Context.SaveChanges();
+            Console.WriteLine(DateTime.Now +" - Initializing Complete");
+
         }
     }
 }

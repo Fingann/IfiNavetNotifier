@@ -9,7 +9,7 @@ namespace IfiNavetNotifier.Web
         {
             return Regex.Replace(name, "\\b" + string.Join("\\b|\\b", StringsToRemove) + "\\b", "");
         }
-        private static List<string> StringsToRemove { get; set; } =
+        private static List<string> StringsToRemove { get; } =
             new List<string>
             {
                 "Bedriftspresentasjon med ",
