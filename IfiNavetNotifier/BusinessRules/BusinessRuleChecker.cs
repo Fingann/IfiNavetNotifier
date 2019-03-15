@@ -25,7 +25,7 @@ namespace IfiNavetNotifier.BusinessRules
 
                 foreach (var businessRule in BusinessRules)
                 {
-                    if (!businessRule.CheckComplience(oldEvent, newEvent)) continue;
+                    if (!businessRule.CheckCompliance(oldEvent, newEvent)) continue;
 
                     yield return (Rule: businessRule.RuleName, Event: newEvent);
                     break;
