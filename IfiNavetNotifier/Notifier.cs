@@ -37,7 +37,7 @@ namespace IfiNavetNotifier
                         PushManager.Send(ifiEvent);
 
             EventList = new ConcurrentBag<IfiEvent>(ifiEvents);
-
+            Console.WriteLine(DateTime.Now +" - Check Event finished");
         }
 
         public void Run(TimeSpan periodTimeSpan)
@@ -66,3 +66,4 @@ namespace IfiNavetNotifier
         }
     }
 }
+

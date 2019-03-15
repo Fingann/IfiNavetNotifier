@@ -13,28 +13,28 @@ namespace IfiNavetNotifier.Web
     {
         public EventWebClient(HttpCookieClient httpCookieClient)
         {
-            Crawler = new EventCrawler(httpCookieClient);
+            Scraper = new EventScraper(httpCookieClient);
         }
 
-        private EventCrawler Crawler { get; }
+        private EventScraper Scraper { get; }
 
 
         public async Task<IEnumerable<IfiEvent>> GetEvents()
         {
-            var result = await Crawler.GetAllEventLinks();
+            var result = await Scraper.GetAllEventLinks();
             if (result == null)
                 return null;
             
             var events = new ConcurrentBag<IfiEvent>();
 
-            await result.ForEachAsync(100, async uri =>  events.Add(await Crawler.GetEvent(uri)));
+            await result.ForEachAsync(100, async uri =>  events.Add(await Scraper.GetEvent(uri)));
 
             return events;
         }
 
         public async Task<IfiEvent> GetEvent(Uri uri)
         {
-            return await Crawler.GetEvent(uri);
+            return await Scraper.GetEvent(uri);
         }
 
 //        public bool LoggInn(UserLogin user)

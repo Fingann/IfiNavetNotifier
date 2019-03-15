@@ -9,9 +9,9 @@ using IfiNavetNotifier.Web.Mapper;
 
 namespace IfiNavetNotifier.Web
 {
-    public class EventCrawler
+    public class EventScraper
     {
-        public EventCrawler(HttpCookieClient httpCookieClient)
+        public EventScraper(HttpCookieClient httpCookieClient)
         {
             Client = httpCookieClient;
             BaseUri = new Uri("http://ifinavet.no/");
@@ -22,7 +22,7 @@ namespace IfiNavetNotifier.Web
 
         public async Task<IEnumerable<Uri>> GetAllEventLinks()
         {
-            var doc = await RetriveHtmlDocument(new Uri(BaseUri + "event"));
+            var doc = await RetrieveHtmlDocument(new Uri(BaseUri + "event"));
            
            
             var linkedPages = doc.DocumentNode.Descendants("a")
@@ -33,14 +33,13 @@ namespace IfiNavetNotifier.Web
 
         public async Task<IfiEvent> GetEvent(Uri uri)
         {
-            var doc = await RetriveHtmlDocument(uri);
+            var doc = await RetrieveHtmlDocument(uri);
             var parsedEvent = HtmlToEventMapper.Map(uri, doc);
             return parsedEvent;
         }
 
-        private async Task<HtmlDocument> RetriveHtmlDocument(Uri uri)
+        private async Task<HtmlDocument> RetrieveHtmlDocument(Uri uri)
         {
-           
             var doc = new HtmlDocument();
             try
             {
@@ -54,27 +53,5 @@ namespace IfiNavetNotifier.Web
             }
             return doc;
         }
-
-//        public bool LoginUser(UserLogin user)
-//        {
-//            var loginCredentials = new List<KeyValuePair<string, string>>()
-//            {
-//                new KeyValuePair<string, string>("username", user.Username),
-//                new KeyValuePair<string, string>("password", user.Password),
-//                
-//            };
-//            var url = new Uri(BaseUri, "login");
-//            var response = Client.PostAsync(url, new FormUrlEncodedContent(loginCredentials)).Result;
-//            var temp = response.Content.ReadAsStringAsync().Result;
-//
-//            if (temp.Contains("Logg ut"))
-//            {
-//                return false;
-//            }
-//
-//            return true;
-//            //TODO: Logic for checking if login was success
-//
-//        }
     }
 }
