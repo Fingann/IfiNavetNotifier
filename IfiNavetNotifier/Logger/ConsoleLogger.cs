@@ -7,8 +7,9 @@ namespace IfiNavetNotifier.Logger
         public LoggLevel CurrentLoggLevel { get; set; }
         public ConsoleLogger(LoggLevel loggLevel = LoggLevel.Info)
         {
+            //TODO: Create possibility to set loglevel in the Environmental variable
             CurrentLoggLevel = loggLevel;
-        }
+        }    
         [Flags]
         public enum LoggLevel
         {
@@ -39,6 +40,7 @@ namespace IfiNavetNotifier.Logger
         public void Exception(string info, Exception ex)
         {
             logToConsole(info + " - "+ ex.Message);
+            Console.WriteLine("test");
         }
 
         private void logToConsole(string message)

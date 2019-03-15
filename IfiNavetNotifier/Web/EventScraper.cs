@@ -14,8 +14,6 @@ namespace IfiNavetNotifier.Web
     {
         public EventScraper(HttpCookieClient httpCookieClient, ILogger logger)
         {
-
-
             Logger = logger;
             Client = httpCookieClient;
             BaseUri = new Uri("http://ifinavet.no/");
