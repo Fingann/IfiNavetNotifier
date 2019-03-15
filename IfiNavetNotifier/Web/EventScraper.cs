@@ -5,18 +5,23 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
+using IfiNavetNotifier.Logger;
 using IfiNavetNotifier.Web.Mapper;
 
 namespace IfiNavetNotifier.Web
 {
     public class EventScraper
     {
-        public EventScraper(HttpCookieClient httpCookieClient)
+        public EventScraper(HttpCookieClient httpCookieClient, ILogger logger)
         {
+
+
+            Logger = logger;
             Client = httpCookieClient;
             BaseUri = new Uri("http://ifinavet.no/");
         }
 
+        private ILogger Logger { get; }
         private Uri BaseUri { get; }
         private HttpCookieClient Client { get; }
 
@@ -48,7 +53,7 @@ namespace IfiNavetNotifier.Web
             }
             catch (HttpRequestException e)
             {
-                Console.WriteLine(DateTime.Now + " - " + e);
+                Logger.Exception("HTTP exception ", e);
                 return null;
             }
             return doc;

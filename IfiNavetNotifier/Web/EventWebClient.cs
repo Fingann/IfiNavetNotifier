@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using IfiNavetNotifier.Extentions;
+using IfiNavetNotifier.Logger;
 
 [assembly: InternalsVisibleTo("IfiNavet.Infrastructure.Tests")]
 
@@ -11,11 +12,13 @@ namespace IfiNavetNotifier.Web
 {
     public class EventWebClient : IEventClient
     {
-        public EventWebClient(HttpCookieClient httpCookieClient)
+        public EventWebClient(HttpCookieClient httpCookieClient, ILogger logger)
         {
-            Scraper = new EventScraper(httpCookieClient);
+            Logger = logger;   
+            Scraper = new EventScraper(httpCookieClient, Logger);
         }
 
+        public ILogger Logger { get; }
         private EventScraper Scraper { get; }
 
 

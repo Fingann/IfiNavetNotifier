@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Net.Http;
 using System.Threading;
+using IfiNavetNotifier.Logger;
 using IfiNavetNotifier.Notifications;
 using IfiNavetNotifier.Web;
 
@@ -13,15 +14,16 @@ namespace IfiNavetNotifier
         private static void Main(string[] args)
         {
             SetCulture();
+            ILogger logger = new ConsoleLogger(ConsoleLogger.LoggLevel.Debugg);
 
             var cookieClient = new HttpCookieClient();
             Login(cookieClient);
 
             INotifyManager pushManager = new PushbulletManager();
-            IEventClient eventClient = new EventWebClient(cookieClient);
+            IEventClient eventClient = new EventWebClient(cookieClient, logger);
 
             var howOftenToRun = TimeSpan.FromSeconds(10);
-            var notifier = new Notifier(eventClient, pushManager);
+            var notifier = new Notifier(eventClient, pushManager,logger);
 
 
             notifier.InitializeDb();
