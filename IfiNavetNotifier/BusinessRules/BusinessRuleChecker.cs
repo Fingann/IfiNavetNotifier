@@ -13,8 +13,9 @@ namespace IfiNavetNotifier.BusinessRules
 
         public IEnumerable<IBusinessRule> BusinessRules { get; set; }
 
-        public IEnumerable<Tuple<string, IfiEvent>> Enfocre(IList<IfiEvent> newEvents, IList<IfiEvent> oldEvents)
+        public IEnumerable<Tuple<string, IfiEvent>> Enfocre(IEnumerable<IfiEvent> newEvents, List<IfiEvent> oldEvents)
         {
+            //TODO: Create return yield
             var complientEvents = new List<Tuple<string, IfiEvent>>();
             foreach (var newEvent in newEvents)
             {

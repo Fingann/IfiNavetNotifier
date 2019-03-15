@@ -22,6 +22,9 @@ namespace IfiNavetNotifier.Web
         public async Task<IEnumerable<IfiEvent>> GetEvents()
         {
             var result = await Parser.GetAllEventLinks();
+            if (result == null)
+                return null;
+            
             var events = new ConcurrentBag<IfiEvent>();
 
             await result.ForEachAsync(100, async uri => events.Add(await Parser.GetEvent(uri)));

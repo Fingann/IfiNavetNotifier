@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
@@ -22,8 +23,17 @@ namespace IfiNavetNotifier.Web
         {
             var doc = new HtmlDocument();
             var uri = new Uri(BaseUri + "event");
-            var html = await Client.GetStringAsync(uri);
-            doc.LoadHtml(html);
+            try
+            {
+                var html = await Client.GetStringAsync(uri);
+                doc.LoadHtml(html);
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine(DateTime.Now + " - " + e);
+                return null;
+            }
+           
 
             var linkedPages = doc.DocumentNode.Descendants("a")
                 .Select(a => a.GetAttributeValue("href", null))

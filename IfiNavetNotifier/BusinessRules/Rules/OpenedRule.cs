@@ -2,14 +2,14 @@ using IfiNavetNotifier.Extentions;
 
 namespace IfiNavetNotifier.BusinessRules.Rules
 {
-    public class Closed : IBusinessRule
+    public class OpenedRule: IBusinessRule
     {
-        public string RuleName { get; } = nameof(Closed).TitleCaseToRegular();
+        public string RuleName { get; } = nameof(OpenedRule).RuleToRegular();
         public int Priority { get; } = 10;
 
         public bool CheckComplience(IfiEvent database, IfiEvent target)
         {
-            return database.Open && !target.Open;
+            return !database.Open && target.Open;
         }
     }
 }

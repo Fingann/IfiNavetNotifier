@@ -5,8 +5,10 @@ namespace IfiNavetNotifier.Web
 {
     public class CookieClient : HttpClient
     {
+        
         public CookieClient() : base(Handler)
         {
+            
         }
 
         private static CookieContainer CookieContainer { get; } = new CookieContainer();

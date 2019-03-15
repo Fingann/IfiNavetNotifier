@@ -8,15 +8,16 @@ namespace IfiNavetNotifier.Notifications
 {
     public class PushbulletManager : INotifyManager
     {
+        public PushbulletClient Client { get; set; }
+        public string ApiKey { get; set; }
+        
         public PushbulletManager()
         {
             ApiKey = Environment.GetEnvironmentVariable("ASPNETCORE_APIKEY");
             Client = new PushbulletClient(ApiKey, TimeZoneInfo.Local);
         }
 
-        public PushbulletClient Client { get; set; }
-        public string ApiKey { get; set; }
-
+  
         public void Send(Tuple<string, IfiEvent> ifiEvent)
         {
             PushNoteRequest reqeust;

@@ -28,6 +28,9 @@ namespace IfiNavetNotifier
 
         public async Task CheckEvents()
         {
+            var guid = Guid.NewGuid().ToString();
+            Console.WriteLine(DateTime.Now +$" - Checking Events");
+
             var ifiEvents = await WebParser.GetEvents();
             if (ifiEvents == null) return;
 
@@ -38,15 +41,15 @@ namespace IfiNavetNotifier
 
     
             if (flagedEvents.Any())
-                foreach (var ifiEvent in flagedEvents)
-                    PushManager.Send(ifiEvent);
+                   foreach (var ifiEvent in flagedEvents)
+                        PushManager.Send(ifiEvent);
 
             Context.RemoveRange(dbevents);
             await Context.SaveChangesAsync();
             Context.AddRange(ifiEvents);
             await Context.SaveChangesAsync();
 
-            Console.WriteLine(DateTime.Now+$" - Events flaged: {flagedEvents.Count}");
+            Console.WriteLine(DateTime.Now +$" - Events flaged: {flagedEvents.Count}");
         }
 
         public void Run(TimeSpan periodTimeSpan)

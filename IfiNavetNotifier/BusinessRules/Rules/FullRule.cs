@@ -2,9 +2,9 @@ using IfiNavetNotifier.Extentions;
 
 namespace IfiNavetNotifier.BusinessRules.Rules
 {
-    public class NoSpotsLeft : IBusinessRule
+    public class FullRule : IBusinessRule
     {
-        public string RuleName { get; } = nameof(AwailableSpots).TitleCaseToRegular();
+        public string RuleName { get; } = nameof(FullRule).RuleToRegular();
         public int Priority { get; } = 1;
 
         public bool CheckComplience(IfiEvent database, IfiEvent target)

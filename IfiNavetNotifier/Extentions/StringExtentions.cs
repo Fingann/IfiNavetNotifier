@@ -9,7 +9,7 @@ namespace IfiNavetNotifier.Extentions
     public static class StringExtentions
     {
         public static string ToTitleCase(this string s) => CultureInfo.InvariantCulture.TextInfo.ToTitleCase(s.ToLower());
-        public static string TitleCaseToRegular(this string org)
+        public static string RuleToRegular(this string org)
         {
             StringBuilder builder = new StringBuilder();
             builder.Append(org[0]);
@@ -25,8 +25,8 @@ namespace IfiNavetNotifier.Extentions
                     builder.Append(tempChar);
                 }
             }
-
-            return builder.ToString();
+            
+            return builder.ToString().Replace(" Rule", "");
         }
     }
 }
