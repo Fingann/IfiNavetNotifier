@@ -5,12 +5,13 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
+using IfiNavetNotifier.Web.Mapper;
 
 namespace IfiNavetNotifier.Web
 {
-    public class EventParser
+    public class EventCrawler
     {
-        public EventParser(CookieClient cookieClient, UserLogin user = null)
+        public EventCrawler(CookieClient cookieClient)
         {
             Client = cookieClient;
             BaseUri = new Uri("http://ifinavet.no/");
@@ -46,7 +47,7 @@ namespace IfiNavetNotifier.Web
             var doc = new HtmlDocument();
             var html = await Client.GetStringAsync(uri);
             doc.LoadHtml(html);
-            var parsedEvent = EventMapper.Map(uri, doc);
+            var parsedEvent = HtmlToEventMapper.Map(uri, doc);
             return parsedEvent;
         }
 

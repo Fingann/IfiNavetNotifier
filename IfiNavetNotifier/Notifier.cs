@@ -28,7 +28,6 @@ namespace IfiNavetNotifier
 
         public async Task CheckEvents()
         {
-            var guid = Guid.NewGuid().ToString();
             Console.WriteLine(DateTime.Now +$" - Checking Events");
 
             var ifiEvents = await WebParser.GetEvents();

@@ -4,9 +4,9 @@ using System.Text.RegularExpressions;
 using HtmlAgilityPack;
 using IfiNavetNotifier.Extentions;
 
-namespace IfiNavetNotifier.Web
+namespace IfiNavetNotifier.Web.Mapper
 {
-    internal static class EventMapper
+    internal static class HtmlToEventMapper
     {
         public static IfiEvent Map(Uri url, HtmlDocument doc)
         {

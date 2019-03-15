@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace IfiNavetNotifier.Web
+namespace IfiNavetNotifier.Web.Mapper
 {
     public static class EventNameCleaner
     {
@@ -9,7 +9,7 @@ namespace IfiNavetNotifier.Web
         {
             return Regex.Replace(name, "\\b" + string.Join("\\b|\\b", StringsToRemove) + "\\b", "");
         }
-        private static List<string> StringsToRemove { get; } =
+        private static IEnumerable<string> StringsToRemove { get; } =
             new List<string>
             {
                 "Bedriftspresentasjon med ",
