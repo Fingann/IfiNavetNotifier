@@ -29,7 +29,7 @@ namespace IfiNavetNotifier.Test.BusinessRules.Rules
 
             var newEvent = generateEvent(5);
 
-            var result = Checker.Enforce(new List<IfiEvent>() {newEvent}, new List<IfiEvent>() {oldEvent});
+            var result = Checker.Enfocre(new List<IfiEvent>() {newEvent}, new List<IfiEvent>() {oldEvent});
             Assert.Single(result);
             var tuple = result.First();
             Assert.Equal(nameof(FiveLeftRule).ToRuleName(), tuple.Item1);
@@ -43,7 +43,7 @@ namespace IfiNavetNotifier.Test.BusinessRules.Rules
 
             var newEvent = generateEvent(5);
 
-            var result = Checker.Enforce(new List<IfiEvent>() {newEvent}, new List<IfiEvent>() {oldEvent});
+            var result = Checker.Enfocre(new List<IfiEvent>() {newEvent}, new List<IfiEvent>() {oldEvent});
             Assert.Empty(result);
         }
 
@@ -54,7 +54,7 @@ namespace IfiNavetNotifier.Test.BusinessRules.Rules
 
             var newEvent = generateEvent(5);
 
-            var result = Checker.Enforce(new List<IfiEvent>() {newEvent}, new List<IfiEvent>() {oldEvent});
+            var result = Checker.Enfocre(new List<IfiEvent>() {newEvent}, new List<IfiEvent>() {oldEvent});
             Assert.Single(result);
             var tuple = result.First();
             Assert.Equal(nameof(FiveLeftRule).ToRuleName(), tuple.Item1);
@@ -67,7 +67,7 @@ namespace IfiNavetNotifier.Test.BusinessRules.Rules
 
             var newEvent = generateEvent(5);
 
-            var result = Checker.Enforce(new List<IfiEvent>() {newEvent}, null);
+            var result = Checker.Enfocre(new List<IfiEvent>() {newEvent}, null);
             Assert.Empty(result);
         }
         
@@ -77,7 +77,7 @@ namespace IfiNavetNotifier.Test.BusinessRules.Rules
 
             var oldEvent = generateEvent(5);
 
-            var result = Checker.Enforce(null, new List<IfiEvent>() {oldEvent});
+            var result = Checker.Enfocre(null, new List<IfiEvent>() {oldEvent});
             Assert.Empty(result);
         }
         
@@ -85,7 +85,7 @@ namespace IfiNavetNotifier.Test.BusinessRules.Rules
         public void PlacesLeft_from_null_to_null_should_return_one_event()
         {
 
-            var result = Checker.Enforce(null,null);
+            var result = Checker.Enfocre(null,null);
             Assert.Empty(result);
         }
     }

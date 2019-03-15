@@ -454,3 +454,4 @@ ASALocalRun/
 healthchecksdb
 
 # End of https://www.gitignore.io/api/macos,jetbrains,visualstudio
+.DS_Store
