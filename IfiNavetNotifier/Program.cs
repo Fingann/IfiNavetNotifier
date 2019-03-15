@@ -13,10 +13,7 @@ namespace IfiNavetNotifier
     {
         private static void Main(string[] args)
         {
-            var culture = CultureInfo.CreateSpecificCulture("no");
-            Thread.CurrentThread.CurrentCulture = culture;
-
-          
+            SetCulture();
 
             var cookieClient = new CookieClient();
             Login(cookieClient);
@@ -33,6 +30,12 @@ namespace IfiNavetNotifier
             notifier.Run(howOftenToRun);
 
             while (true) Thread.Sleep(1000 * 60 * 60);
+        }
+
+        private static void SetCulture()
+        {
+            var culture = CultureInfo.CreateSpecificCulture("no");
+            Thread.CurrentThread.CurrentCulture = culture;
         }
 
         public static void Login(CookieClient cookieClient)
