@@ -18,7 +18,7 @@ namespace IfiNavetNotifier.Notifications
         }
 
   
-        public void Send(Tuple<string, IfiEvent> ifiEvent)
+        public void Send((string Rule, IfiEvent Event) ifiEvent)
         {
             
             PushLinkRequest reqeust;
@@ -26,12 +26,12 @@ namespace IfiNavetNotifier.Notifications
             reqeust = new PushLinkRequest
             {
                 ChannelTag = "ifibot",
-                Title = ifiEvent.Item1 + " - " + ifiEvent.Item2.Name,
-                Url = ifiEvent.Item2.Link
+                Title = ifiEvent.Rule + " - " + ifiEvent.Event.Name,
+                Url = ifiEvent.Event.Link
             };
             
             PushNote(reqeust);
-            Console.WriteLine(DateTime.Now + " - " + ifiEvent.Item1 + " - " + ifiEvent.Item2.Name);
+            Console.WriteLine(DateTime.Now + " - " + ifiEvent.Rule + " - " + ifiEvent.Event.Name);
         }
 
         public void Send(IEnumerable<IfiEvent> events)

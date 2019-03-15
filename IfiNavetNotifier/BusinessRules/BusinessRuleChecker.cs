@@ -14,8 +14,9 @@ namespace IfiNavetNotifier.BusinessRules
 
         public IEnumerable<IBusinessRule> BusinessRules { get; }
 
-        public IEnumerable<Tuple<string, IfiEvent>> Enfocre(IEnumerable<IfiEvent> newEvents, IEnumerable<IfiEvent> oldEvents)
+        public IEnumerable<(string Rule, IfiEvent Event)> Enfocre(IEnumerable<IfiEvent> newEvents, IEnumerable<IfiEvent> oldEvents)
         {
+            
             foreach (var newEvent in newEvents)
             {
                 var oldEvent = oldEvents.FirstOrDefault(x => x.Link == newEvent.Link);
@@ -26,7 +27,7 @@ namespace IfiNavetNotifier.BusinessRules
                 {
                     if (!businessRule.CheckComplience(oldEvent, newEvent)) continue;
 
-                    yield return new Tuple<string, IfiEvent>(businessRule.RuleName, newEvent);
+                    yield return (Rule: businessRule.RuleName, Event: newEvent);
                     break;
                 }
             }

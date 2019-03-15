@@ -6,6 +6,6 @@ namespace IfiNavetNotifier.Notifications
     public interface INotifyManager
     {
         void Send(IEnumerable<IfiEvent> events);
-        void Send(Tuple<string, IfiEvent> events);
+        void Send((string Rule, IfiEvent Event) events);
     }
 }
