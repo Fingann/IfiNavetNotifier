@@ -11,15 +11,15 @@ namespace IfiNavetNotifier
 {
     public class Notifier
     {
-        private IEventClient WebParser { get; }
+        private IEventClient WebClient { get; }
         private INotifyManager PushManager { get; }
         private BusinessRuleChecker BusinessRuleChecker { get; }
 
         public ConcurrentBag<IfiEvent> EventList { get; set; }
         
-        public Notifier(IEventClient webParser, INotifyManager pushManager)
+        public Notifier(IEventClient webClient, INotifyManager pushManager)
         {
-            WebParser = webParser;
+            WebClient = webClient;
             PushManager = pushManager;
             BusinessRuleChecker = new BusinessRuleChecker();
         }
@@ -27,7 +27,7 @@ namespace IfiNavetNotifier
         public async Task CheckEvents()
         {
 
-            var ifiEvents = await WebParser.GetEvents();
+            var ifiEvents = await WebClient.GetEvents();
             if (ifiEvents == null) return;
             
             var flagedEvents = BusinessRuleChecker.Enfocre(ifiEvents, EventList).ToList();
@@ -60,7 +60,7 @@ namespace IfiNavetNotifier
         public void InitializeDb()
         {
             Console.WriteLine(DateTime.Now +" - Initializing List");
-            EventList = new ConcurrentBag<IfiEvent>(WebParser.GetEvents().Result);          
+            EventList = new ConcurrentBag<IfiEvent>(WebClient.GetEvents().Result);          
             Console.WriteLine(DateTime.Now +" - Initializing Complete");
 
         }
