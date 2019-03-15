@@ -16,7 +16,8 @@ namespace IfiNavetNotifier.BusinessRules
 
         public IEnumerable<(string Rule, IfiEvent Event)> Enfocre(IEnumerable<IfiEvent> newEvents, IEnumerable<IfiEvent> oldEvents)
         {
-            
+            if(oldEvents == null || newEvents == null)
+                yield break;
             foreach (var newEvent in newEvents)
             {
                 var oldEvent = oldEvents.FirstOrDefault(x => x.URL == newEvent.URL);
