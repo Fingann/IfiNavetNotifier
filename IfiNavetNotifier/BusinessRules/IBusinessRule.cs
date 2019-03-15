@@ -4,6 +4,6 @@ namespace IfiNavetNotifier.BusinessRules
     {
         string RuleName { get; }
         int Priority { get; }
-        bool CheckComplience(IfiEvent database, IfiEvent target);
+        bool CheckCompliance(IfiEvent database, IfiEvent target);
     }
 }

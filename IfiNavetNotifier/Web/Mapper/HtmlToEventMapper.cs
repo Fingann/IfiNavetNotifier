@@ -25,7 +25,7 @@ namespace IfiNavetNotifier.Web.Mapper
                 Name = EventNameCleaner.CleanName(doc.GetInnerText(NAME_PATH)),
                 Food = doc.GetInnerText(FOOD_PATH),
                 Location = doc.GetInnerText(LOCATION_PATH).Trim(),
-                Link = url.ToString(),
+                URL = url.ToString(),
                 PlacesLeft = GetPlacesLeft(doc),
                 Date = doc.GetInnerText(DATE_PATH).toDate("dd.MM.yyyy HH:mm") ?? new DateTime()
             };

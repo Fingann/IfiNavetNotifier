@@ -27,7 +27,7 @@ namespace IfiNavetNotifier.Notifications
             {
                 ChannelTag = "ifibot",
                 Title = ifiEvent.Item1 + " - " + ifiEvent.Item2.Name,
-                Url = ifiEvent.Item2.Link
+                Url = ifiEvent.Item2.URL
             };
             
             PushNote(reqeust);
