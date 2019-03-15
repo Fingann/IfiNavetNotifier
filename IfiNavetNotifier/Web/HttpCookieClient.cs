@@ -3,10 +3,10 @@ using System.Net.Http;
 
 namespace IfiNavetNotifier.Web
 {
-    public class CookieClient : HttpClient
+    public class HttpCookieClient : HttpClient
     {
         
-        public CookieClient() : base(Handler)
+        public HttpCookieClient() : base(Handler)
         {
             
         }

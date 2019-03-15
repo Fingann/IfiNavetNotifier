@@ -11,19 +11,37 @@ namespace IfiNavetNotifier.Web
 {
     public class EventCrawler
     {
-        public EventCrawler(CookieClient cookieClient)
+        public EventCrawler(HttpCookieClient httpCookieClient)
         {
-            Client = cookieClient;
+            Client = httpCookieClient;
             BaseUri = new Uri("http://ifinavet.no/");
         }
 
         private Uri BaseUri { get; }
-        private CookieClient Client { get; }
+        private HttpCookieClient Client { get; }
 
         public async Task<IEnumerable<Uri>> GetAllEventLinks()
         {
+            var doc = await RetriveHtmlDocument(new Uri(BaseUri + "event"));
+           
+           
+            var linkedPages = doc.DocumentNode.Descendants("a")
+                .Select(a => a.GetAttributeValue("href", null))
+                .Where(u => Regex.IsMatch(u, "/event/\\d")).Select(x => new Uri(BaseUri + x.Substring(1)));
+            return linkedPages;
+        }
+
+        public async Task<IfiEvent> GetEvent(Uri uri)
+        {
+            var doc = await RetriveHtmlDocument(uri);
+            var parsedEvent = HtmlToEventMapper.Map(uri, doc);
+            return parsedEvent;
+        }
+
+        private async Task<HtmlDocument> RetriveHtmlDocument(Uri uri)
+        {
+           
             var doc = new HtmlDocument();
-            var uri = new Uri(BaseUri + "event");
             try
             {
                 var html = await Client.GetStringAsync(uri);
@@ -34,21 +52,7 @@ namespace IfiNavetNotifier.Web
                 Console.WriteLine(DateTime.Now + " - " + e);
                 return null;
             }
-           
-
-            var linkedPages = doc.DocumentNode.Descendants("a")
-                .Select(a => a.GetAttributeValue("href", null))
-                .Where(u => Regex.IsMatch(u, "/event/\\d")).Select(x => new Uri(BaseUri + x.Substring(1)));
-            return linkedPages;
-        }
-
-        public async Task<IfiEvent> GetEvent(Uri uri)
-        {
-            var doc = new HtmlDocument();
-            var html = await Client.GetStringAsync(uri);
-            doc.LoadHtml(html);
-            var parsedEvent = HtmlToEventMapper.Map(uri, doc);
-            return parsedEvent;
+            return doc;
         }
 
 //        public bool LoginUser(UserLogin user)

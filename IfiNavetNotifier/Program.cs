@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Net.Http;
 using System.Threading;
-using IfiNavetNotifier.Database;
 using IfiNavetNotifier.Notifications;
 using IfiNavetNotifier.Web;
 
@@ -15,15 +14,14 @@ namespace IfiNavetNotifier
         {
             SetCulture();
 
-            var cookieClient = new CookieClient();
+            var cookieClient = new HttpCookieClient();
             Login(cookieClient);
 
             INotifyManager pushManager = new PushbulletManager();
             IEventClient eventClient = new EventWebClient(cookieClient);
-            var context = new IfiEventContext();
 
             var howOftenToRun = TimeSpan.FromSeconds(10);
-            var notifier = new Notifier(context, eventClient, pushManager);
+            var notifier = new Notifier(eventClient, pushManager);
 
 
             notifier.InitializeDb();
@@ -38,7 +36,7 @@ namespace IfiNavetNotifier
             Thread.CurrentThread.CurrentCulture = culture;
         }
 
-        public static void Login(CookieClient cookieClient)
+        public static void Login(HttpCookieClient httpCookieClient)
         {
             Console.WriteLine(DateTime.Now +" - Logging in and storing credentials");
             var loginCredentials = new List<KeyValuePair<string, string>>
@@ -48,7 +46,7 @@ namespace IfiNavetNotifier
             };
             var content = new FormUrlEncodedContent(loginCredentials);
 
-            var response = cookieClient.PostAsync("https://ifinavet.no/login", content).Result;
+            var response = httpCookieClient.PostAsync("https://ifinavet.no/login", content).Result;
             //var res = response.Content.ReadAsStringAsync().Result;
             Console.WriteLine(DateTime.Now +" - Login complete");
 

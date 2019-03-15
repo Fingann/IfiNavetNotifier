@@ -11,12 +11,12 @@ namespace IfiNavetNotifier.Web
 {
     public class EventWebClient : IEventClient
     {
-        public EventWebClient(CookieClient cookieClient)
+        public EventWebClient(HttpCookieClient httpCookieClient)
         {
-            Crawler = new EventCrawler(cookieClient);
+            Crawler = new EventCrawler(httpCookieClient);
         }
 
-        internal EventCrawler Crawler { get; }
+        private EventCrawler Crawler { get; }
 
 
         public async Task<IEnumerable<IfiEvent>> GetEvents()
@@ -27,7 +27,7 @@ namespace IfiNavetNotifier.Web
             
             var events = new ConcurrentBag<IfiEvent>();
 
-            await result.ForEachAsync(100, async uri => events.Add(await Crawler.GetEvent(uri)));
+            await result.ForEachAsync(100, async uri =>  events.Add(await Crawler.GetEvent(uri)));
 
             return events;
         }

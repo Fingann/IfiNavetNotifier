@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace IfiNavetNotifier.BusinessRules
 {
@@ -11,12 +12,10 @@ namespace IfiNavetNotifier.BusinessRules
             BusinessRules = GetBussinessRules();
         }
 
-        public IEnumerable<IBusinessRule> BusinessRules { get; set; }
+        public IEnumerable<IBusinessRule> BusinessRules { get; }
 
-        public IEnumerable<Tuple<string, IfiEvent>> Enfocre(IEnumerable<IfiEvent> newEvents, List<IfiEvent> oldEvents)
+        public IEnumerable<Tuple<string, IfiEvent>> Enfocre(IEnumerable<IfiEvent> newEvents, IEnumerable<IfiEvent> oldEvents)
         {
-            //TODO: Create return yield
-            var complientEvents = new List<Tuple<string, IfiEvent>>();
             foreach (var newEvent in newEvents)
             {
                 var oldEvent = oldEvents.FirstOrDefault(x => x.Link == newEvent.Link);
@@ -27,12 +26,10 @@ namespace IfiNavetNotifier.BusinessRules
                 {
                     if (!businessRule.CheckComplience(oldEvent, newEvent)) continue;
 
-                    complientEvents.Add(new Tuple<string, IfiEvent>(businessRule.RuleName, newEvent));
+                    yield return new Tuple<string, IfiEvent>(businessRule.RuleName, newEvent);
                     break;
                 }
             }
-
-            return complientEvents;
         }
 
         public IEnumerable<IBusinessRule> GetBussinessRules(params object[] constructorArgs)

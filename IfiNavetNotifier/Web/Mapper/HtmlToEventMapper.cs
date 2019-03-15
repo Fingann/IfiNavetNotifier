@@ -10,6 +10,7 @@ namespace IfiNavetNotifier.Web.Mapper
     {
         public static IfiEvent Map(Uri url, HtmlDocument doc)
         {
+            
             var ifiEvent = new IfiEvent
             {
                 Name = EventNameCleaner.CleanName(doc.DocumentNode.SelectSingleNode("/html/body/div[3]/div/div[1]/h1").InnerText),

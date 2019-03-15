@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using IfiNavetNotifier.BusinessRules;
-using IfiNavetNotifier.Database;
 using IfiNavetNotifier.Notifications;
 using IfiNavetNotifier.Web;
 
@@ -11,44 +11,33 @@ namespace IfiNavetNotifier
 {
     public class Notifier
     {
-        public Notifier(IfiEventContext context, IEventClient webParser, INotifyManager pushManager)
+        private IEventClient WebParser { get; }
+        private INotifyManager PushManager { get; }
+        private BusinessRuleChecker BusinessRuleChecker { get; }
+
+        public ConcurrentBag<IfiEvent> EventList { get; set; }
+        
+        public Notifier(IEventClient webParser, INotifyManager pushManager)
         {
-            Context = context;
             WebParser = webParser;
             PushManager = pushManager;
             BusinessRuleChecker = new BusinessRuleChecker();
         }
 
-        private IEventClient WebParser { get; }
-
-        private IfiEventContext Context { get; }
-        private INotifyManager PushManager { get; }
-        public BusinessRuleChecker BusinessRuleChecker { get; set; }
-
-
         public async Task CheckEvents()
         {
-            Console.WriteLine(DateTime.Now +$" - Checking Events");
 
             var ifiEvents = await WebParser.GetEvents();
             if (ifiEvents == null) return;
-
-            var dbevents = Context.IfiEvent.ToList();
-
-
-            var flagedEvents = BusinessRuleChecker.Enfocre(ifiEvents.ToList(), dbevents).ToList();
-
+            
+            var flagedEvents = BusinessRuleChecker.Enfocre(ifiEvents, EventList).ToList();
     
             if (flagedEvents.Any())
                    foreach (var ifiEvent in flagedEvents)
                         PushManager.Send(ifiEvent);
 
-            Context.RemoveRange(dbevents);
-            await Context.SaveChangesAsync();
-            Context.AddRange(ifiEvents);
-            await Context.SaveChangesAsync();
+            EventList = new ConcurrentBag<IfiEvent>(ifiEvents);
 
-            Console.WriteLine(DateTime.Now +$" - Events flaged: {flagedEvents.Count}");
         }
 
         public void Run(TimeSpan periodTimeSpan)
@@ -70,9 +59,8 @@ namespace IfiNavetNotifier
 
         public void InitializeDb()
         {
-            Console.WriteLine(DateTime.Now +" - Initializing DB");
-            Context.AddRange(WebParser.GetEvents().Result);
-            Context.SaveChanges();
+            Console.WriteLine(DateTime.Now +" - Initializing List");
+            EventList = new ConcurrentBag<IfiEvent>(WebParser.GetEvents().Result);          
             Console.WriteLine(DateTime.Now +" - Initializing Complete");
 
         }
