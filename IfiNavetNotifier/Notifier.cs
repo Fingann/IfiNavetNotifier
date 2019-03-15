@@ -30,7 +30,7 @@ namespace IfiNavetNotifier
             var ifiEvents = await WebClient.GetEvents();
             if (ifiEvents == null) return;
             
-            var flagedEvents = BusinessRuleChecker.Enfocre(ifiEvents, EventList).ToList();
+            var flagedEvents = BusinessRuleChecker.Enforce(ifiEvents, EventList).ToList();
     
             if (flagedEvents.Any())
                    foreach (var ifiEvent in flagedEvents)

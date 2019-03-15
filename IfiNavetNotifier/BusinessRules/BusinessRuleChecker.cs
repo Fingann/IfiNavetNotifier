@@ -19,7 +19,7 @@ namespace IfiNavetNotifier.BusinessRules
             
             foreach (var newEvent in newEvents)
             {
-                var oldEvent = oldEvents.FirstOrDefault(x => x.Link == newEvent.Link);
+                var oldEvent = oldEvents.FirstOrDefault(x => x.URL == newEvent.URL);
                 if (oldEvent == null)
                     continue;
 

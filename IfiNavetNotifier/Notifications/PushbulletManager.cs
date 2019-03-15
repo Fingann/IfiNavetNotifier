@@ -26,8 +26,8 @@ namespace IfiNavetNotifier.Notifications
             reqeust = new PushLinkRequest
             {
                 ChannelTag = "ifibot",
-                Title = ifiEvent.Rule + " - " + ifiEvent.Event.Name,
-                Url = ifiEvent.Event.Link
+                Title = ifiEvent.Item1 + " - " + ifiEvent.Item2.Name,
+                Url = ifiEvent.Item2.URL
             };
             
             PushNote(reqeust);

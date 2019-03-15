@@ -5,7 +5,7 @@ namespace IfiNavetNotifier
 {
     public class IfiEvent
     {
-        [Key] public string Link { get; set; }
+        [Key] public string URL { get; set; }
 
         public string Name { get; set; }
         public DateTime Date { get; set; }
