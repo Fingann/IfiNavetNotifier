@@ -17,7 +17,6 @@ namespace IfiNavetNotifier.Notifications
             Client = new PushbulletClient(ApiKey, TimeZoneInfo.Local);
         }
 
-  
         public void Send((string Rule, IfiEvent Event) ifiEvent)
         {
             
@@ -34,48 +33,12 @@ namespace IfiNavetNotifier.Notifications
             Console.WriteLine(DateTime.Now + " - " + ifiEvent.Rule + " - " + ifiEvent.Event.Name);
         }
 
-        public void Send(IEnumerable<IfiEvent> events)
+        public void Send(IEnumerable<(string Rule, IfiEvent Event)> events)
         {
-            PushNoteRequest reqeust;
-
-            if (events.Count() == 1)
-            {
-                reqeust = new PushNoteRequest
-                {
-                    ChannelTag = "ifibot",
-                    Title = $"{events.First().PlacesLeft} - {events.First().Name}",
-                    Body = events.First().ToString()
-                };
-            }
-            else
-            {
-                var body = string.Empty;
-                foreach (var ifiEvent in events)
-                    body += ifiEvent.Name + Environment.NewLine + "Places Left = " + ifiEvent.Name +
-                            Environment.NewLine + ifiEvent + Environment.NewLine;
-                reqeust = new PushNoteRequest
-                {
-                    ChannelTag = "ifibot",
-                    Title = $"{events.Count()} events updated",
-                    Body = body
-                };
-            }
-
-            PushNote(reqeust);
+            foreach (var ifiEvent in events)
+                Send(ifiEvent);
         }
-
-        private void PushNote(PushNoteRequest request)
-        {
-            try
-            {
-                
-                var response = Client.PushNote(request);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-        }
+      
         private void PushNote(PushLinkRequest request)
         {
             try

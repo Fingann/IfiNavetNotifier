@@ -18,7 +18,7 @@ namespace IfiNavetNotifier.Web
             Scraper = new EventScraper(httpCookieClient, Logger);
         }
 
-        public ILogger Logger { get; }
+        private ILogger Logger { get; }
         private EventScraper Scraper { get; }
 
 

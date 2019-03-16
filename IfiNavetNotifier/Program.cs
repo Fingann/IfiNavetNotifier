@@ -19,17 +19,14 @@ namespace IfiNavetNotifier
             
             var howOftenToRun = TimeSpan.FromSeconds(10);
             ITaskScheduler taskScheduler = new PeriodicTaskScheduler(howOftenToRun);
-            
+       
             var cookieClient = new HttpCookieClient();
-            Login(cookieClient);
-
-            INotifyManager pushManager = new PushbulletManager();
+            Login(cookieClient, logger);
+            
             IEventClient eventClient = new EventWebClient(cookieClient, logger);
-
-            var notifier = new Notifier(eventClient, pushManager, taskScheduler,logger);
-
-
-            notifier.InitializeDb();
+            INotifyManager pushManager = new PushbulletManager();
+            
+            var notifier = new NavetNotifier(eventClient, pushManager, taskScheduler,logger);
             notifier.Start();
 
             while (true) Thread.Sleep(1000 * 60 * 60);
@@ -41,19 +38,17 @@ namespace IfiNavetNotifier
             Thread.CurrentThread.CurrentCulture = culture;
         }
 
-        public static void Login(HttpCookieClient httpCookieClient)
+        public async static void Login(HttpCookieClient httpCookieClient, ILogger logger)
         {
-            Console.WriteLine(DateTime.Now +" - Logging in and storing credentials");
+            logger.Informtion("Logging in and storing credentials");
             var loginCredentials = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("username", Environment.GetEnvironmentVariable("ASPNETCORE_USER")),
                 new KeyValuePair<string, string>("password", Environment.GetEnvironmentVariable("ASPNETCORE_PASSWORD"))
             };
-            var content = new FormUrlEncodedContent(loginCredentials);
-
-            var response = httpCookieClient.PostAsync("https://ifinavet.no/login", content).Result;
+            await httpCookieClient.Login(loginCredentials);
             //var res = response.Content.ReadAsStringAsync().Result;
-            Console.WriteLine(DateTime.Now +" - Login complete");
+            logger.Informtion("Loggin Complete");
 
         }
     }

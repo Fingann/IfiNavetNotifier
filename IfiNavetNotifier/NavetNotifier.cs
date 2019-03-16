@@ -11,48 +11,45 @@ using IfiNavetNotifier.Web;
 
 namespace IfiNavetNotifier
 {
-    public class Notifier
+    public class NavetNotifier
     {
         private IEventClient WebClient { get; }
         private INotifyManager PushManager { get; }
         private ITaskScheduler TaskScheduler { get; set; }
-        private BusinessRuleChecker BusinessRuleChecker { get; }
+        private BusinessRuleChecker RuleChecker { get; }
         private ILogger Logger { get; }
         private ConcurrentBag<IfiEvent> EventList { get; set; }
         
-        public Notifier(IEventClient webClient, INotifyManager pushManager,ITaskScheduler taskScheduler, ILogger logger)
+        public NavetNotifier(IEventClient webClient, INotifyManager pushManager,ITaskScheduler taskScheduler, ILogger logger)
         {
             TaskScheduler = taskScheduler;
             WebClient = webClient;
             PushManager = pushManager;
             Logger = logger;
-            BusinessRuleChecker = new BusinessRuleChecker();
+            RuleChecker = new BusinessRuleChecker();
         }
 
         private async Task CheckEvents()
         {
 
-            var ifiEvents = await WebClient.GetEvents();
-            if (ifiEvents == null) return;
+            var newEventList = (await WebClient.GetEvents()).ToList();
             
-            var flagedEvents = BusinessRuleChecker.Enfocre(ifiEvents, EventList).ToList();
-    
-            if (flagedEvents.Any())
-                   foreach (var ifiEvent in flagedEvents)
-                        PushManager.Send(ifiEvent);
+            var flagedEvents = RuleChecker.Enfocre(newEventList, EventList);
+            PushManager.Send(flagedEvents);
 
-            EventList = new ConcurrentBag<IfiEvent>(ifiEvents);
+            EventList = new ConcurrentBag<IfiEvent>(newEventList);
             Logger.Debug("Event finished");
         }
 
         public void Start()
         {
+            InitializeList();
             TaskScheduler.Start(CheckEvents);
         }
 
        
 
-        public void InitializeDb()
+        public void InitializeList()
         {
             Logger.Debug("Initializing List");
             EventList = new ConcurrentBag<IfiEvent>(WebClient.GetEvents().Result);          
