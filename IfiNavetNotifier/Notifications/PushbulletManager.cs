@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using IfiNavetNotifier.Logger;
 using PushbulletSharp;
 using PushbulletSharp.Models.Requests;
 
@@ -8,11 +9,13 @@ namespace IfiNavetNotifier.Notifications
 {
     public class PushbulletManager : INotifyManager
     {
-        public PushbulletClient Client { get; set; }
-        public string ApiKey { get; set; }
+        private PushbulletClient Client { get; }
+        private string ApiKey { get;  }
+        private ILogger Logger { get;  }
         
-        public PushbulletManager()
+        public PushbulletManager(ILogger logger)
         {
+            Logger = logger;
             ApiKey = Environment.GetEnvironmentVariable("ASPNETCORE_APIKEY");
             Client = new PushbulletClient(ApiKey, TimeZoneInfo.Local);
         }
@@ -30,7 +33,7 @@ namespace IfiNavetNotifier.Notifications
             };
             
             PushNote(reqeust);
-            Console.WriteLine(DateTime.Now + " - " + ifiEvent.Rule + " - " + ifiEvent.Event.Name);
+            Logger.Informtion(ifiEvent.Rule + " - " + ifiEvent.Event.Name);
         }
 
         public void Send(IEnumerable<(string Rule, IfiEvent Event)> events)
@@ -44,11 +47,12 @@ namespace IfiNavetNotifier.Notifications
             try
             {
                 var response = Client.PushLink(request);
+                Logger.Debug(response.ToString());
                 
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Logger.Exception("Failed sending push notification", e);
             }
         }
     }

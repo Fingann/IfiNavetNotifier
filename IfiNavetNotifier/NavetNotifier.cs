@@ -34,11 +34,11 @@ namespace IfiNavetNotifier
 
             var newEventList = (await WebClient.GetEvents()).ToList();
             
-            var flagedEvents = RuleChecker.Enfocre(newEventList, EventList);
-            PushManager.Send(flagedEvents);
+            var flaggedEvents = RuleChecker.Enfocre(newEventList, EventList);
+            PushManager.Send(flaggedEvents);
 
             EventList = new ConcurrentBag<IfiEvent>(newEventList);
-            Logger.Debug("Event finished");
+            Logger.Debug("CheckEvents finished");
         }
 
         public void Start()

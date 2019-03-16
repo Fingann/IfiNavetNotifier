@@ -24,7 +24,7 @@ namespace IfiNavetNotifier
             Login(cookieClient, logger);
             
             IEventClient eventClient = new EventWebClient(cookieClient, logger);
-            INotifyManager pushManager = new PushbulletManager();
+            INotifyManager pushManager = new PushbulletManager(logger);
             
             var notifier = new NavetNotifier(eventClient, pushManager, taskScheduler,logger);
             notifier.Start();
