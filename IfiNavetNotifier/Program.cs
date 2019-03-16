@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading;
 using IfiNavetNotifier.Logger;
 using IfiNavetNotifier.Notifications;
+using IfiNavetNotifier.TaskScheduler;
 using IfiNavetNotifier.Web;
 
 namespace IfiNavetNotifier
@@ -15,19 +16,21 @@ namespace IfiNavetNotifier
         {
             SetCulture();
             ILogger logger = new ConsoleLogger(ConsoleLogger.LoggLevel.Debugg);
-
+            
+            var howOftenToRun = TimeSpan.FromSeconds(10);
+            ITaskScheduler taskScheduler = new PeriodicTaskScheduler(howOftenToRun);
+            
             var cookieClient = new HttpCookieClient();
             Login(cookieClient);
 
             INotifyManager pushManager = new PushbulletManager();
             IEventClient eventClient = new EventWebClient(cookieClient, logger);
 
-            var howOftenToRun = TimeSpan.FromSeconds(10);
-            var notifier = new Notifier(eventClient, pushManager,logger);
+            var notifier = new Notifier(eventClient, pushManager, taskScheduler,logger);
 
 
             notifier.InitializeDb();
-            notifier.Run(howOftenToRun);
+            notifier.Start();
 
             while (true) Thread.Sleep(1000 * 60 * 60);
         }

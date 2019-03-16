@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using IfiNavetNotifier.BusinessRules;
 using IfiNavetNotifier.Logger;
 using IfiNavetNotifier.Notifications;
+using IfiNavetNotifier.TaskScheduler;
 using IfiNavetNotifier.Web;
 
 namespace IfiNavetNotifier
@@ -14,20 +15,21 @@ namespace IfiNavetNotifier
     {
         private IEventClient WebClient { get; }
         private INotifyManager PushManager { get; }
+        private ITaskScheduler TaskScheduler { get; set; }
         private BusinessRuleChecker BusinessRuleChecker { get; }
         private ILogger Logger { get; }
-        public ConcurrentBag<IfiEvent> EventList { get; set; }
+        private ConcurrentBag<IfiEvent> EventList { get; set; }
         
-        public Notifier(IEventClient webClient, INotifyManager pushManager, ILogger logger)
+        public Notifier(IEventClient webClient, INotifyManager pushManager,ITaskScheduler taskScheduler, ILogger logger)
         {
-            
+            TaskScheduler = taskScheduler;
             WebClient = webClient;
             PushManager = pushManager;
-            this.Logger = logger;
+            Logger = logger;
             BusinessRuleChecker = new BusinessRuleChecker();
         }
 
-        public async Task CheckEvents()
+        private async Task CheckEvents()
         {
 
             var ifiEvents = await WebClient.GetEvents();
@@ -43,22 +45,12 @@ namespace IfiNavetNotifier
             Logger.Debug("Event finished");
         }
 
-        public void Run(TimeSpan periodTimeSpan)
+        public void Start()
         {
-            Logger.Debug("Starting pariodic task with interval of: "+ periodTimeSpan);
-
-            var ct = new CancellationToken();          
-            PeriodicTask(CheckEvents, periodTimeSpan, ct);
+            TaskScheduler.Start(CheckEvents);
         }
 
-        public async void PeriodicTask(Func<Task> task,TimeSpan interval, CancellationToken cancellationToken)
-        {
-            while (true)
-            {
-                await task();
-                await Task.Delay(interval, cancellationToken);
-            }
-        }
+       
 
         public void InitializeDb()
         {
