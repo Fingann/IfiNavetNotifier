@@ -18,6 +18,8 @@ namespace IfiNavetNotifier.BusinessRules
         {
             if(oldEvents == null || newEvents == null)
                 yield break;
+            
+            
             foreach (var newEvent in newEvents)
             {
                 var oldEvent = oldEvents.FirstOrDefault(x => x.URL == newEvent.URL);
@@ -34,7 +36,7 @@ namespace IfiNavetNotifier.BusinessRules
             }
         }
 
-        public IEnumerable<IBusinessRule> GetBussinessRules(params object[] constructorArgs)
+        public IEnumerable<IBusinessRule> GetBussinessRules()
         {
             return AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes())
                 .Where(x => typeof(IBusinessRule).IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract)

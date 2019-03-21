@@ -5,7 +5,7 @@ namespace IfiNavetNotifier.BusinessRules.Rules
     public class ClosedRule : IBusinessRule
     {
         public string RuleName { get; } = nameof(ClosedRule).ToRuleName();
-        public int Priority { get; } = 10;
+        public int Priority { get; } = 100;
 
         public bool CheckCompliance(IfiEvent database, IfiEvent target)
         {
