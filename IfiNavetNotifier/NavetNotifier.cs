@@ -38,7 +38,6 @@ namespace IfiNavetNotifier
             PushManager.Send(flaggedEvents);
 
             EventList = new ConcurrentBag<IfiEvent>(newEventList);
-            Logger.Debug("CheckEvents finished");
         }
 
         public void Start()
