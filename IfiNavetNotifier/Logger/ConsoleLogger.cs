@@ -7,6 +7,7 @@ namespace IfiNavetNotifier.Logger
         public LoggLevel CurrentLoggLevel { get; set; }
         public ConsoleLogger(LoggLevel loggLevel = LoggLevel.Info)
         {
+            //TODO Add loglevels Tests
             //TODO: Create possibility to set loglevel in the Environmental variable
             CurrentLoggLevel = loggLevel;
         }    
@@ -21,26 +22,26 @@ namespace IfiNavetNotifier.Logger
 
         public void Informtion(string info)
         {
-            if(CurrentLoggLevel == LoggLevel.Info)
+            
+            //if(CurrentLoggLevel == LoggLevel.Info)
                 logToConsole(info);
         }
 
         public void Warning(string warning)
         {
-            if(CurrentLoggLevel == LoggLevel.Warning)
+            //if(CurrentLoggLevel == LoggLevel.Warning)
                 logToConsole(warning);
         }
 
         public void Debug(string info)
         {
-            if(CurrentLoggLevel == LoggLevel.Debugg)
+            //if(CurrentLoggLevel == LoggLevel.Debugg)
                 logToConsole(info);        
         }
 
         public void Exception(string info, Exception ex)
         {
             logToConsole(info + " - "+ ex.Message);
-            Console.WriteLine("test");
         }
 
         private void logToConsole(string message)

@@ -7,6 +7,7 @@ using IfiNavetNotifier.Logger;
 using IfiNavetNotifier.Notifications;
 using IfiNavetNotifier.TaskScheduler;
 using IfiNavetNotifier.Web;
+using PushbulletSharp;
 
 namespace IfiNavetNotifier
 {
@@ -14,6 +15,8 @@ namespace IfiNavetNotifier
     {
         private static void Main(string[] args)
         {
+            PushbulletClient pm = new PushbulletClient();
+            
             SetCulture();
             ILogger logger = new ConsoleLogger(ConsoleLogger.LoggLevel.Debugg);
             

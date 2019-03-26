@@ -23,16 +23,16 @@ namespace IfiNavetNotifier.Notifications
         public void Send((string Rule, IfiEvent Event) ifiEvent)
         {
             
-            PushLinkRequest reqeust;
+            PushLinkRequest linkRequest;
 
-            reqeust = new PushLinkRequest
+            linkRequest = new PushLinkRequest
             {
                 ChannelTag = "ifibot",
                 Title = ifiEvent.Item1 + " - " + ifiEvent.Item2.Name,
                 Url = ifiEvent.Item2.URL
             };
             
-            PushNote(reqeust);
+            PushNote(linkRequest);
             Logger.Informtion(ifiEvent.Rule + " - " + ifiEvent.Event.Name);
         }
 
@@ -46,8 +46,7 @@ namespace IfiNavetNotifier.Notifications
         {
             try
             {
-                var response = Client.PushLink(request);
-                Logger.Debug(response.ToString());
+                Client.PushLink(request);
                 
             }
             catch (Exception e)
