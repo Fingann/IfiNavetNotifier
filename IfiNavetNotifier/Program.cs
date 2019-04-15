@@ -15,7 +15,6 @@ namespace IfiNavetNotifier
     {
         private static void Main(string[] args)
         {
-            PushbulletClient pm = new PushbulletClient();
             
             SetCulture();
             ILogger logger = new ConsoleLogger(ConsoleLogger.LoggLevel.Debugg);
